@@ -17,7 +17,7 @@ export default function Layout() {
         <div className="public-header-content">
           <div className="public-header-left" onClick={() => navigate("/")}>
             <img
-              src="http://localhost:5281/images/Logo.svg"
+              src="https://bookingserver-60jc.onrender.com/images/Logo.svg"
               alt="Logo"
               className="public-logo"
             />
