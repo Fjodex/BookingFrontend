@@ -54,7 +54,6 @@ export async function updateBooking(
     firstName: string;
     lastName: string;
     phoneNumber: string;
-    email: string;
     customerNotes: string;
     bookingDate: string;
   },
@@ -70,7 +69,6 @@ export const createAdminBooking = (data: {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  email: string;
   customerNotes: string;
 }) =>
   apiFetch("/admin/bookings/create", {

@@ -25,7 +25,6 @@ export default function AdminDayPopup({
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
   const [customerNotes, setCustomerNotes] = useState("");
 
   const hasBookings = day.bookings.length > 0;
@@ -37,11 +36,7 @@ export default function AdminDayPopup({
   );
 
   const isFormValid =
-    selectedItemId &&
-    firstName.trim() &&
-    lastName.trim() &&
-    phoneNumber.trim() &&
-    email.trim();
+    selectedItemId && firstName.trim() && lastName.trim() && phoneNumber.trim();
 
   const handleToggleBlocked = async () => {
     await toggleBlockedDay(day.date);
@@ -58,7 +53,6 @@ export default function AdminDayPopup({
       firstName,
       lastName,
       phoneNumber,
-      email,
       customerNotes,
     });
 
@@ -147,13 +141,6 @@ export default function AdminDayPopup({
               placeholder="Phone number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
 
             <textarea
