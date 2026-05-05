@@ -107,7 +107,6 @@ export default function AdminBookingsPage() {
   const handleBookingSave = async (updated: unknown) => {
     if (!selectedBooking) return;
     const bookingData = updated as AdminBookingRequest;
-    if (!bookingData.email) return;
     await updateBooking(
       selectedBooking.id,
       bookingData as Parameters<typeof updateBooking>[1],

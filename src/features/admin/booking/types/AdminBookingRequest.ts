@@ -5,7 +5,6 @@ export interface AdminBookingRequest {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  email?: string;
   customerNotes?: string;
   bookingDate: string;
 }
