@@ -1,0 +1,130 @@
+/* RIGHT PANEL LAYOUT */
+
+.arend-right {
+  display: grid;
+  grid-template-rows: 1fr 260px;
+  gap: 20px;
+  height: 100%;
+}
+
+/* SECTION CONTAINERS */
+
+.arend-section {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.06),
+    0 6px 20px rgba(0, 0, 0, 0.04);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+.arend-section h2 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+}
+
+/* SCROLLABLE LIST */
+
+.solved-list {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+/* EMPTY STATE */
+
+.arend-empty {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  font-size: 14px;
+}
+
+/* AREND CARD */
+
+.arend-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  padding: 10px 12px;
+  margin-bottom: 8px;
+
+  background: #fafafa;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.12s ease;
+}
+
+.arend-card:hover {
+  background: #f3f4f6;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.05),
+    0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* TITLE */
+
+.arend-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* CUSTOMER */
+
+.arend-customer {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* STATUS BADGE */
+
+.arend-status {
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* STATUS COLORS */
+
+.arend-status.active {
+  color: #e5533d;
+}
+
+.arend-status.processed {
+  color: #e5a63d;
+}
+
+.arend-status.solved {
+  color: #2ea043;
+}
+
+/* OPTIONAL: solved card style */
+
+.arend-card.solved {
+  opacity: 0.85;
+}
+
+/* SCROLLBAR */
+
+.solved-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.solved-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}

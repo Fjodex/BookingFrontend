@@ -1,0 +1,148 @@
+/* ===== MODAL OVERRIDE ===== */
+
+.admin-day-popup {
+  width: 520px;
+  padding: 32px;
+}
+
+/* ===== TITLE ===== */
+
+.popup-title {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* ===== BLOCK SECTION ===== */
+
+.block-toggle-section {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+/* Prevent global input width from affecting checkbox */
+.admin-day-popup input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-left: 35px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.block-warning {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #c45757;
+}
+
+/* ===== EXISTING BOOKINGS ===== */
+
+.existing-bookings {
+  margin-bottom: 28px;
+}
+
+.existing-bookings h4 {
+  margin-bottom: 12px;
+}
+
+.booking-mini-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.mini-booking-item {
+  font-weight: 600;
+}
+
+.mini-booking-name {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.mini-booking-status {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* ===== CREATE BOOKING ===== */
+
+.create-booking-section {
+  margin-top: 20px;
+}
+
+.create-booking-section h4 {
+  margin-bottom: 18px;
+}
+
+/* Full width inputs */
+.create-booking-section input[type="text"],
+.create-booking-section input[type="tel"],
+.create-booking-section input[type="email"],
+.create-booking-section select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition:
+    border 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* Two inputs side-by-side */
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-row input {
+  flex: 1;
+  margin-bottom: 14px;
+}
+
+/* Textarea */
+.create-booking-section textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  box-sizing: border-box;
+  resize: vertical;
+  transition:
+    border 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.create-booking-section input:focus,
+.create-booking-section select:focus,
+.create-booking-section textarea:focus {
+  outline: none;
+  border-color: #2c7be5;
+  box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.15);
+}
+
+/* ===== BUTTONS ===== */
+
+.full-width {
+  width: 100%;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

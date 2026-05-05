@@ -1,0 +1,63 @@
+/* =====================================================
+   CALENDAR PANEL WRAPPER
+===================================================== */
+
+.booking-page .calendar-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* =====================================================
+   CALENDAR NAVIGATION
+===================================================== */
+
+.booking-page .calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 30px;
+}
+
+/* Month + Year */
+
+.booking-page .calendar-nav-title {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: capitalize;
+  min-width: 160px;
+  text-align: center;
+}
+
+/* Navigation Buttons */
+
+.booking-page .calendar-nav-button {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  cursor: pointer;
+
+  transition: all 0.15s ease;
+}
+
+/* Hover */
+
+.booking-page .calendar-nav-button:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+/* Click */
+
+.booking-page .calendar-nav-button:active {
+  transform: scale(0.94);
+}

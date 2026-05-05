@@ -1,0 +1,149 @@
+.arend-page {
+  flex: 1;
+  padding: 30px;
+  overflow: hidden;
+}
+
+/* MAIN GRID */
+
+.arend-layout {
+  display: grid;
+  grid-template-columns: 0.45fr 0.55fr;
+  gap: 24px;
+  height: 100%;
+}
+
+/* BOOKINGS PANEL */
+
+.arend-bookings {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.06),
+    0 6px 20px rgba(0, 0, 0, 0.04);
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  overflow-y: auto;
+}
+
+/* BOOKING ROW */
+
+.booking-row {
+  display: grid;
+
+  grid-template-columns:
+    2fr /* item */
+    2fr /* customer */
+    2fr /* phone */
+    2fr /* email */
+    2fr /* date */
+    2fr /* status */
+    auto; /* button */
+
+  align-items: center;
+  gap: 5px;
+
+  padding: 8px 5px;
+
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  font-size: 13px;
+
+  background: #fafafa;
+
+  width: 95%;
+}
+
+.booking-row:hover {
+  background: #f3f4f6;
+}
+
+/* TEXT TRUNCATION */
+
+.booking-row div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* BUTTON */
+
+.create-arend-button {
+  border: none;
+  background: #2c7be5;
+  color: white;
+
+  padding: 4px 6px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.create-arend-button:hover {
+  background: #1a68d1;
+}
+
+/* RIGHT SIDE */
+
+.arend-right {
+  display: grid;
+  grid-template-rows: 1fr 220px;
+  gap: 24px;
+  height: 100%;
+}
+
+/* TOP ACTIVE + PROCESSING */
+
+.arend-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.arend-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.06),
+    0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* SOLVED SECTION */
+
+.arend-solved {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.06),
+    0 6px 20px rgba(0, 0, 0, 0.04);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.solved-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+/* EMPTY STATE */
+
+.arend-empty {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+}

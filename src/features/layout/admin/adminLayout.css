@@ -1,0 +1,163 @@
+/* =========================
+   ROOT
+========================= */
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f8f8f8;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.admin-topbar {
+  background-color: #e5e5e5;
+  color: #333;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 20px;
+
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.admin-header {
+  background-color: #2f2f2f;
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding: 15px 30px;
+
+  position: sticky;
+  top: 32px;
+  z-index: 1000;
+
+  flex-shrink: 0;
+}
+
+.admin-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1800px;
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-logo {
+  height: 50px;
+  object-fit: contain;
+}
+
+.admin-brand {
+  font-size: 24px;
+  padding-top: 4px;
+}
+
+/* =========================
+   RIGHT SIDE
+========================= */
+
+.admin-header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.admin-role {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* =========================
+   ICON NAVIGATION
+========================= */
+
+.admin-icon-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 8px;
+  border: none;
+
+  background: transparent;
+  color: white;
+
+  cursor: pointer;
+
+  transition: all 0.15s ease;
+}
+
+.icon-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.icon-button.active {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =========================
+   LOGOUT
+========================= */
+
+.logout-button {
+  background-color: white;
+  color: #2f2f2f;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.logout-button:hover {
+  background-color: #f2f2f2;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.admin-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+}

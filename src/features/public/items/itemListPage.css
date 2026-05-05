@@ -1,0 +1,147 @@
+/* ========================================
+   PAGE LAYOUT
+======================================== */
+
+.items-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 40px;
+}
+
+.items-title {
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+/* ========================================
+   GRID
+======================================== */
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 36px;
+}
+
+/* ========================================
+   CARD
+======================================== */
+
+.item-preview-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover Effect */
+
+.item-preview-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
+}
+
+/* Active Click Effect */
+
+.item-preview-card:active {
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   IMAGE
+======================================== */
+
+.item-preview-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #f3f4f6;
+  overflow: hidden;
+}
+
+.item-preview-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* Subtle zoom on hover */
+
+.item-preview-card:hover .item-preview-image img {
+  transform: scale(1.05);
+}
+
+/* Placeholder */
+
+.item-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    #f3f4f6 25%,
+    #e5e7eb 25%,
+    #e5e7eb 50%,
+    #f3f4f6 50%,
+    #f3f4f6 75%,
+    #e5e7eb 75%,
+    #e5e7eb
+  );
+  background-size: 20px 20px;
+}
+
+/* ========================================
+   CONTENT
+======================================== */
+
+.item-preview-content {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-preview-content h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.item-preview-description {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Max 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+  .items-page {
+    padding: 40px 20px;
+  }
+
+  .items-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .items-grid {
+    gap: 24px;
+  }
+}

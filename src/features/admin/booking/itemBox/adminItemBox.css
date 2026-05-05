@@ -1,0 +1,110 @@
+/* ===== ITEMS PANEL ===== */
+
+.admin-items-box {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.items-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.add-item-icon-button {
+  width: 33px;
+  height: 33px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.add-item-icon-button:hover {
+  background: #f3f4f6;
+}
+
+/* ===== LIST ===== */
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #e5e7eb;
+
+  max-height: 180px; /* adjust to fit your layout */
+  overflow-y: auto;
+}
+
+/* ===== ITEM ROW ===== */
+
+.admin-item-row {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #e5e7eb; /* full-width divider */
+
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.admin-item-row:hover {
+  background: #f8fafc;
+}
+.items-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.items-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.items-list::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+/* Bigger color square */
+
+.item-color {
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+}
+
+/* Name */
+
+.item-name {
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+.inactive {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+/* Bigger checkbox */
+
+.item-checkbox {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}

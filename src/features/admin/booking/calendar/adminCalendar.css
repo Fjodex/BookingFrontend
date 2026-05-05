@@ -1,0 +1,260 @@
+/* ================= PANEL ================= */
+
+.admin-calendar {
+  background: white;
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.08),
+    0 6px 20px rgba(0, 0, 0, 0.05);
+
+  padding: 24px;
+  height: calc(100% - 44px);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ================= HEADER ================= */
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.calendar-header button {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb; /* 🔥 border back */
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.calendar-header button:hover {
+  background: #e5e7eb;
+}
+
+/* ================= WEEKDAYS ================= */
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 8px;
+}
+
+.calendar-weekdays div {
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 0;
+  color: #6b7280;
+}
+
+/* ================= GRID ================= */
+
+.calendar-grid {
+  flex: 1;
+  display: grid;
+
+  /* 🔥 Force strict equal sizing */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+
+  gap: 10px;
+  min-height: 0;
+  padding-bottom: 15px;
+}
+
+/* ================= DAY CELL ================= */
+
+.calendar-day {
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 10px;
+  padding: 8px;
+  min-width: 0; /* 🔥 important */
+  min-height: 0; /* 🔥 important */
+
+  /* 🔥 Border added back */
+  border: 1px solid #e5e7eb;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.12s ease,
+    border 0.12s ease;
+}
+
+.calendar-day:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* ================= DAY STATES ================= */
+
+.calendar-day.future {
+  background: white;
+}
+
+.calendar-day.past {
+  background: #f9fafb;
+  color: #9ca3af;
+}
+
+.calendar-day.today {
+  border: 2px solid #2c7be5; /* 🔥 accent border */
+}
+
+.calendar-day.blocked {
+  background: #ffe6e6;
+  border: 2px solid #cc0000;
+}
+
+/* ================= DAY NUMBER ================= */
+
+.day-number {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* ================= BOOKINGS ================= */
+
+.calendar-bookings {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+
+  /* 🔥 Prevent layout shift */
+  scrollbar-gutter: stable;
+
+  padding-right: 4px;
+}
+
+.calendar-bookings::-webkit-scrollbar {
+  width: 6px;
+}
+
+.calendar-bookings::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.calendar-booking {
+  margin-top: 4px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ================= COUNTER ================= */
+
+.booking-counter {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* ================= EMPTY CELLS ================= */
+
+.calendar-empty {
+  border-radius: 10px;
+  border: 1px solid transparent; /* keeps layout consistent */
+  background: transparent;
+}
+
+/* ================= NOTE ICON ================= */
+
+.calendar-booking {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.booking-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.note-icon {
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: transform 0.15s ease;
+}
+
+.note-icon:hover {
+  transform: scale(1.2);
+}
+
+/* ================= NOTE POPUP ================= */
+
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.note-popup {
+  background: white;
+  width: 380px;
+  max-width: 90%;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.08);
+
+  animation: scaleIn 0.15s ease;
+}
+
+.note-header {
+  font-weight: 600;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.note-body {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+  white-space: pre-wrap;
+}
+
+.note-close {
+  background: #2c7be5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.note-close:hover {
+  background: #1a68d1;
+}

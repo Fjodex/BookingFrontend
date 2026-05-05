@@ -1,0 +1,72 @@
+/* =====================================================
+   CALENDAR CELL (Scoped to booking page only)
+===================================================== */
+
+.booking-page .calendar-cell {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 100%;
+  height: 52px;
+
+  border: none;
+  outline: none;
+  background: #ffffff;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    transform 0.08s ease,
+    box-shadow 0.15s ease;
+}
+
+/* ================= HOVER ================= */
+
+.booking-page .calendar-cell:not(.disabled):hover {
+  background: #e6f4ea;
+}
+
+/* ================= ACTIVE CLICK ================= */
+
+.booking-page .calendar-cell:not(.disabled):active {
+  transform: scale(0.96);
+}
+
+/* ================= SELECTED (LIGHT GREEN) ================= */
+
+.booking-page .calendar-cell.selected {
+  background: #cfe8d6;
+  color: #1f3d2b;
+  font-weight: 600;
+}
+
+/* Slight darker hover when selected */
+.booking-page .calendar-cell.selected:hover {
+  background: #bfe0c8;
+}
+
+/* ================= DISABLED ================= */
+
+.booking-page .calendar-cell.disabled,
+.booking-page .calendar-cell.booked,
+.booking-page .calendar-cell.blocked {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Optional subtle visual distinction */
+.booking-page .calendar-cell.booked {
+  background: #f1f5f9;
+}
+
+.booking-page .calendar-cell.blocked {
+  background: #f9fafb;
+  opacity: 0.6;
+}

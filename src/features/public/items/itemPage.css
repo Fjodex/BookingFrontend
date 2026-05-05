@@ -1,0 +1,122 @@
+/* PAGE */
+
+.item-page {
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.item-page__container {
+  max-width: 1100px;
+  width: 100%;
+}
+
+/* CARD */
+
+.item-page__card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 30px;
+}
+
+/* HEADER */
+
+.item-page__header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.item-page__header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* BUTTON */
+
+.item-page__book-button {
+  background: #8cae75;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.item-page__book-button:hover {
+  background: #7e9e67;
+}
+
+.item-page__price {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* MAIN */
+
+.item-page__main {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+/* IMAGE */
+
+.item-page__image-frame {
+  width: 320px;
+  height: 320px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.item-page__image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* TEXT */
+
+.item-page__text {
+  flex: 1;
+}
+
+.item-page__text h2 {
+  margin-top: 0;
+}
+
+/* SPEC */
+
+.item-page__spec {
+  margin-top: 30px;
+}
+
+.item-page__spec h4 {
+  margin-bottom: 8px;
+}
+
+.item-page__spec p {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+/* VIDEO */
+
+.item-page__video {
+  margin-top: 30px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.item-page__video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
