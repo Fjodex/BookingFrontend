@@ -43,9 +43,9 @@ export default function ArendDetailModal({ arend, onClose, onUpdated }: Props) {
           <h3>{arend.itemName}</h3>
 
           <div className={`status-badge ${arend.status.toLowerCase()}`}>
-            {arend.status === "Processed" && "Bearbetas"}
-            {arend.status === "Solved" && "Löst"}
-            {arend.status === "New" && "Ny"}
+            {arend.status === ("Processed" as ArendStatus) && "Bearbetas"}
+            {arend.status === ("Solved" as ArendStatus) && "Löst"}
+            {arend.status === ("New" as ArendStatus) && "Ny"}
           </div>
         </div>
 

@@ -14,7 +14,6 @@ export default function AdminBookingList({
   bookings,
   onHandover,
   onReturn,
-  onClear,
   onDelete,
 }: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
