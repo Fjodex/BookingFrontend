@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import "./bookingEditModal.css";
 import { getCalendarMonth } from "../../../public/booking/api/calendar";
@@ -43,15 +43,13 @@ export default function BookingEditModal({
     booking.customerNotes ?? "",
   );
 
-  const [selectedDate, setSelectedDate] = useState(booking.bookingDate);
+  const [selectedDate] = useState(booking.bookingDate);
   const [loading, setLoading] = useState(false);
 
-  const [viewYear, setViewYear] = useState(bookingDateObj.getFullYear());
-  const [viewMonth, setViewMonth] = useState(bookingDateObj.getMonth() + 1);
-  const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([]);
-  const [showCalendar, setShowCalendar] = useState(false);
-
-  const calendarRef = useRef<HTMLDivElement>(null);
+  const [viewYear] = useState(bookingDateObj.getFullYear());
+  const [viewMonth] = useState(bookingDateObj.getMonth() + 1);
+  const [, setCalendarDays] = useState<CalendarDay[]>([]);
+  const [, setShowCalendar] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

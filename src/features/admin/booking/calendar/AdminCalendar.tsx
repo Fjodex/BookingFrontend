@@ -129,7 +129,7 @@ export default function AdminCalendar({
                         className="note-icon"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setActiveNote(b.customerNotes);
+                          setActiveNote(b.customerNotes || null);
                         }}
                       >
                         (!)

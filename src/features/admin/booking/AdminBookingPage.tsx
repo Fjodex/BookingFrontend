@@ -4,8 +4,7 @@ import AdminBookingList from "./bookingList/AdminBookingList";
 import BookingEditModal from "./calendar/BookingEditModal";
 import AdminItemsBox from "./itemBox/AdminItemBox";
 import AdminDayPopup from "./calendar/AdminDayPopup";
-import ConfirmModal from "../shared/ConfirmModal";
-
+import ConfirmModal from "../shared/components/ConfirmModal";
 import { getAdminItems } from "../api/adminItemApi";
 import { getAdminCalendar } from "./api/adminCalendarApi";
 import {
@@ -21,6 +20,7 @@ import {
 import type { AdminBooking } from "./types/AdminBooking";
 import type { Item } from "../../sharedTypes/Item";
 import type { AdminCalendarDay } from "./types/AdminCalendar";
+import type { AdminBookingRequest } from "./types/AdminBookingRequest";
 
 import "./adminBookingPage.css";
 
@@ -98,15 +98,20 @@ export default function AdminBookingsPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshAll();
   }, [year, month]);
 
   /* ---------------- BOOKING ACTIONS ---------------- */
 
-  const handleBookingSave = async (updated: any) => {
+  const handleBookingSave = async (updated: unknown) => {
     if (!selectedBooking) return;
-
-    await updateBooking(selectedBooking.id, updated);
+    const bookingData = updated as AdminBookingRequest;
+    if (!bookingData.email) return;
+    await updateBooking(
+      selectedBooking.id,
+      bookingData as Parameters<typeof updateBooking>[1],
+    );
     await refreshAll();
     await syncTimestamp();
 
@@ -129,7 +134,7 @@ export default function AdminBookingsPage() {
     setConfirmAction("clear");
   };
 
-  const handleDelete = (booking: AdminBooking) => {
+  const handleDelete = async (booking: AdminBooking) => {
     setConfirmBooking(booking);
     setConfirmAction("delete");
   };
@@ -139,7 +144,11 @@ export default function AdminBookingsPage() {
   const toggleItem = (id: string) => {
     setVisibleItemIds((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };

@@ -1,15 +1,5 @@
 import { apiFetch } from "../../../../api/http";
-
-export interface CreateBookingRequest {
-  itemId: string;
-  dates: string[];
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email?: string; // ← optional (since backend uses it)
-  customerNotes?: string;
-}
-
+import type { CreateBookingRequest } from "../../../sharedTypes/CreateBookingRequest";
 export function createBooking(request: CreateBookingRequest) {
   return apiFetch<void>("/bookings", {
     method: "POST",
