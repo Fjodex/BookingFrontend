@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5281/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 function getAuthToken(): string | null {
   return localStorage.getItem("adminToken");
