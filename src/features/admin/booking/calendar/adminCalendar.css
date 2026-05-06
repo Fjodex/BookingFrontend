@@ -258,3 +258,49 @@
 .note-close:hover {
   background: #1a68d1;
 }
+@media (max-width: 900px) {
+  .calendar-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch; /* 🔥 smooth mobile scroll */
+  }
+  .calendar-scroll::after {
+    content: "→";
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    opacity: 0.3;
+    font-size: 18px;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    min-width: 980px; /* 7 * 140px */
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 140px);
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 140px);
+    grid-template-rows: repeat(6, minmax(100px, auto));
+    gap: 8px;
+  }
+  .calendar-day {
+    min-height: 110px;
+    padding: 10px;
+  }
+
+  .calendar-booking {
+    font-size: 13px;
+    padding: 5px 8px;
+  }
+
+  .day-number {
+    font-size: 14px;
+  }
+}
