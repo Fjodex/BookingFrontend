@@ -74,86 +74,83 @@ export default function AdminCalendar({
           →
         </button>
       </div>
+      <div className="calendar-inner">
+        <div className="calendar-weekdays">
+          {WEEKDAYS.map((d) => (
+            <div key={d}>{d}</div>
+          ))}
+        </div>
 
-      <div className="calendar-scale-wrapper">
-        <div className="calendar-inner">
-          <div className="calendar-weekdays">
-            {WEEKDAYS.map((d) => (
-              <div key={d}>{d}</div>
-            ))}
-          </div>
+        <div className="calendar-grid">
+          {Array.from({ length: startOffset }).map((_, i) => (
+            <div key={`empty-start-${i}`} className="calendar-empty" />
+          ))}
 
-          <div className="calendar-grid">
-            {Array.from({ length: startOffset }).map((_, i) => (
-              <div key={`empty-start-${i}`} className="calendar-empty" />
-            ))}
+          {days.map((day) => {
+            const dateObj = new Date(day.date);
+            dateObj.setHours(0, 0, 0, 0);
 
-            {days.map((day) => {
-              const dateObj = new Date(day.date);
-              dateObj.setHours(0, 0, 0, 0);
+            const isPast = dateObj < today;
+            const isToday = dateObj.getTime() === today.getTime();
 
-              const isPast = dateObj < today;
-              const isToday = dateObj.getTime() === today.getTime();
+            const filteredBookings = day.bookings.filter((b) =>
+              visibleItemIds.has(b.itemId),
+            );
 
-              const filteredBookings = day.bookings.filter((b) =>
-                visibleItemIds.has(b.itemId),
-              );
-
-              return (
-                <div
-                  key={day.date}
-                  className={`calendar-day
+            return (
+              <div
+                key={day.date}
+                className={`calendar-day
                 ${day.isBlocked ? "blocked" : ""}
                 ${isPast ? "past" : "future"}
                 ${isToday ? "today" : ""}
               `}
-                  onClick={() => onDayClick(day)}
-                >
-                  <div className="day-number">{dateObj.getDate()}</div>
+                onClick={() => onDayClick(day)}
+              >
+                <div className="day-number">{dateObj.getDate()}</div>
 
-                  <div className="calendar-bookings">
-                    {filteredBookings.map((b) => (
-                      <div
-                        key={b.id}
-                        className="calendar-booking"
-                        style={{ backgroundColor: b.color }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onBookingClick(b);
-                        }}
-                      >
-                        <span className="booking-name">
-                          {b.firstName} {b.lastName}
+                <div className="calendar-bookings">
+                  {filteredBookings.map((b) => (
+                    <div
+                      key={b.id}
+                      className="calendar-booking"
+                      style={{ backgroundColor: b.color }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onBookingClick(b);
+                      }}
+                    >
+                      <span className="booking-name">
+                        {b.firstName} {b.lastName}
+                      </span>
+
+                      {b.customerNotes && (
+                        <span
+                          className="note-icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveNote(b.customerNotes || null);
+                          }}
+                        >
+                          (!)
                         </span>
-
-                        {b.customerNotes && (
-                          <span
-                            className="note-icon"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveNote(b.customerNotes || null);
-                            }}
-                          >
-                            (!)
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {filteredBookings.length > 3 && (
-                    <div className="booking-counter">
-                      {filteredBookings.length} bookings
+                      )}
                     </div>
-                  )}
+                  ))}
                 </div>
-              );
-            })}
 
-            {Array.from({ length: trailingEmpty }).map((_, i) => (
-              <div key={`empty-end-${i}`} className="calendar-empty" />
-            ))}
-          </div>
+                {filteredBookings.length > 3 && (
+                  <div className="booking-counter">
+                    {filteredBookings.length} bookings
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {Array.from({ length: trailingEmpty }).map((_, i) => (
+            <div key={`empty-end-${i}`} className="calendar-empty" />
+          ))}
         </div>
       </div>
 
