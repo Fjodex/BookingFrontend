@@ -259,14 +259,31 @@
   background: #1a68d1;
 }
 @media (max-width: 900px) {
-  .calendar-scale-wrapper {
-    width: 100%;
-    overflow: hidden;
+  .admin-calendar {
+    padding: 12px;
+    height: auto;
   }
 
-  .calendar-inner {
-    width: 700px; /* base width (7 columns * 100px-ish) */
-    transform-origin: top left;
-    transform: scale(calc(100vw / 700));
+  .calendar-grid {
+    gap: 6px;
+  }
+
+  .calendar-day {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .day-number {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .calendar-booking {
+    font-size: 11px;
+    padding: 3px 5px;
+  }
+
+  .calendar-weekdays div {
+    font-size: 12px;
   }
 }
