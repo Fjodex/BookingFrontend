@@ -259,31 +259,43 @@
   background: #1a68d1;
 }
 @media (max-width: 900px) {
+  /* Remove outer padding */
   .admin-calendar {
-    padding: 12px;
-    height: auto;
+    padding: 8px;
   }
 
+  /* Remove spacing between cells */
   .calendar-grid {
-    gap: 6px;
+    gap: 0px; /* or 0 if you want it fully tight */
+    padding-bottom: 0;
   }
 
+  /* Tighten each cell */
   .calendar-day {
-    padding: 6px;
-    font-size: 12px;
+    padding: 4px;
+    border-radius: 6px;
   }
 
-  .day-number {
-    font-size: 12px;
+  /* Make weekdays more compact */
+  .calendar-weekdays {
     margin-bottom: 4px;
   }
 
-  .calendar-booking {
-    font-size: 11px;
-    padding: 3px 5px;
+  .calendar-weekdays div {
+    padding: 4px 0;
+    font-size: 12px;
   }
 
-  .calendar-weekdays div {
+  /* Reduce booking spacing */
+  .calendar-booking {
+    margin-top: 2px;
+    padding: 2px 4px;
+    font-size: 11px;
+  }
+
+  /* Reduce number spacing */
+  .day-number {
+    margin-bottom: 2px;
     font-size: 12px;
   }
 }
