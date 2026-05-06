@@ -265,8 +265,8 @@
   }
 
   /* Remove spacing between cells */
-  .calendar-grid {
-    gap: 0px; /* or 0 if you want it fully tight */
+  .admin-calendar.calendar-grid {
+    gap: 0px;
     padding-bottom: 0;
   }
 
