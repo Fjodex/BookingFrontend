@@ -12,7 +12,6 @@ type Props = {
     firstName: string;
     lastName: string;
     phoneNumber: string;
-    email: string;
     customerNotes: string;
     bookingDate: string;
   }) => Promise<void>;
@@ -38,7 +37,6 @@ export default function BookingEditModal({
   const [firstName, setFirstName] = useState(booking.firstName ?? "");
   const [lastName, setLastName] = useState(booking.lastName ?? "");
   const [phoneNumber, setPhoneNumber] = useState(booking.phoneNumber ?? "");
-  const [email, setEmail] = useState(booking.email ?? "");
   const [customerNotes, setCustomerNotes] = useState(
     booking.customerNotes ?? "",
   );
@@ -64,8 +62,7 @@ export default function BookingEditModal({
     });
   }, [booking.itemId, viewYear, viewMonth]);
 
-  const isValid =
-    firstName.trim() && lastName.trim() && phoneNumber.trim() && email.trim();
+  const isValid = firstName.trim() && lastName.trim() && phoneNumber.trim();
 
   const handleSave = async () => {
     if (!isValid) return;
@@ -77,7 +74,6 @@ export default function BookingEditModal({
       firstName,
       lastName,
       phoneNumber,
-      email,
       customerNotes,
       bookingDate: selectedDate,
     });
@@ -130,14 +126,6 @@ export default function BookingEditModal({
           disabled={loading}
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
-        />
-
-        <label>Email</label>
-        <input
-          type="email"
-          disabled={loading}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
         />
 
         <label>Customer note</label>

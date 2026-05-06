@@ -94,3 +94,40 @@
   min-height: 0; /* 🔥 critical */
   overflow-y: auto; /* only list scrolls */
 }
+/* ===== MOBILE RESPONSIVE ===== */
+
+@media (max-width: 900px) {
+  .admin-bookings-layout {
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .admin-bookings-calendar {
+    flex: none;
+    width: 100%;
+    padding: 16px;
+  }
+
+  .admin-bookings-list {
+    flex: none;
+    width: 100%;
+    padding: 16px;
+  }
+
+  /* Make items + list stack nicely */
+  .admin-bookings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Optional: reduce spacing */
+  .admin-items-box {
+    margin-bottom: 0;
+  }
+
+  /* Prevent weird overflow issues */
+  .booking-list-wrapper {
+    overflow: visible;
+  }
+}
