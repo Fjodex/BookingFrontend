@@ -259,28 +259,14 @@
   background: #1a68d1;
 }
 @media (max-width: 900px) {
-  .calendar-weekdays {
-    display: none; /* 🔥 hide weekdays on mobile */
+  .calendar-scale-wrapper {
+    width: 100%;
+    overflow: hidden;
   }
 
-  .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 🔥 3 columns */
-    grid-auto-rows: minmax(110px, auto);
-    gap: 10px;
-  }
-
-  .calendar-day {
-    min-height: 110px;
-    padding: 10px;
-  }
-
-  .calendar-booking {
-    font-size: 13px;
-    padding: 5px 8px;
-  }
-
-  .day-number {
-    font-size: 15px;
+  .calendar-inner {
+    width: 700px; /* base width (7 columns * 100px-ish) */
+    transform-origin: top left;
+    transform: scale(calc(100vw / 700));
   }
 }

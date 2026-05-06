@@ -75,17 +75,19 @@ export default function AdminCalendar({
         </button>
       </div>
 
-      <div className="calendar-scroll">
-        <div className="calendar-weekdays">
-          {WEEKDAYS.map((d) => (
-            <div key={d}>{d}</div>
-          ))}
-        </div>
+      <div className="calendar-scale-wrapper">
+        <div className="calendar-inner">
+          <div className="calendar-weekdays">
+            {WEEKDAYS.map((d) => (
+              <div key={d}>{d}</div>
+            ))}
+          </div>
 
-        <div className="calendar-grid">
-          {Array.from({ length: startOffset }).map((_, i) => (
-            <div key={`empty-start-${i}`} className="calendar-empty" />
-          ))}
+          <div className="calendar-grid">
+            {Array.from({ length: startOffset }).map((_, i) => (
+              <div key={`empty-start-${i}`} className="calendar-empty" />
+            ))}
+          </div>
         </div>
 
         {days.map((day) => {
