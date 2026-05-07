@@ -48,8 +48,10 @@
 .booking-page .selected-image {
   width: 70px;
   height: 70px;
-  min-width: 0px;
   border-radius: 10px;
+
+  flex-shrink: 0; /* 🔥 prevents image from growing/shrinking weirdly */
+
   overflow: hidden;
   background: white;
   border: 1px solid #d1e3d7;
@@ -67,6 +69,8 @@
   display: flex;
   flex-direction: column;
   max-width: 700px; /* 👈 justera vid behov */
+  min-width: 0; /* 🔥 allows shrinking */
+  flex: 1; /* 🔥 take remaining space */
 }
 
 .booking-page .selected-label {
@@ -390,4 +394,133 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+  /* PAGE */
+  .booking-page {
+    margin: 10px auto;
+    padding: 0 12px;
+  }
+
+  /* ========================
+     HEADER CARD
+  ======================== */
+
+  .booking-page .selected-item-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .booking-page .selected-left {
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .booking-page .selected-image {
+    width: 55px;
+    height: 55px;
+  }
+
+  .booking-page .selected-name {
+    font-size: 16px;
+  }
+
+  .booking-page .selected-description {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+
+  .booking-page .selected-right {
+    width: 100%;
+    text-align: left;
+  }
+
+  /* ========================
+     MAIN LAYOUT (STACK)
+  ======================== */
+
+  .booking-page .booking-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* ========================
+     CALENDAR
+  ======================== */
+
+  .booking-page .calendar-wrapper {
+    padding: 16px;
+  }
+
+  /* ========================
+     FORM
+  ======================== */
+
+  .booking-page .form-card {
+    gap: 8px;
+  }
+
+  .booking-page .field {
+    padding: 20px 14px 8px 14px;
+  }
+
+  .booking-page .field input,
+  .booking-page .field textarea {
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+  /* ========================
+     SUMMARY
+  ======================== */
+
+  .booking-page .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .booking-page .summary-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .booking-page .confirm-button {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  /* ========================
+     RECEIPT
+  ======================== */
+
+  .booking-page .receipt {
+    padding: 16px;
+  }
+
+  /* ========================
+     MODAL
+  ======================== */
+
+  .booking-modal {
+    width: 100%;
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
 }

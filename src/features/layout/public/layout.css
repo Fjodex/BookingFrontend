@@ -127,3 +127,54 @@
     height: 36px;
   }
 }
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+  /* 🔹 Topbar stacks */
+  .public-topbar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  /* 🔹 Header layout becomes vertical */
+  .public-header-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  /* 🔹 Logo + brand shrink */
+  .public-logo {
+    height: 32px;
+  }
+
+  .public-brand {
+    font-size: 16px;
+  }
+
+  /* 🔹 Navigation spacing */
+  .public-header-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 🔹 Bigger tap targets */
+  .public-nav-button {
+    font-size: 15px;
+    padding: 10px 16px;
+  }
+
+  /* 🔹 Footer slightly tighter */
+  .public-footer {
+    font-size: 12px;
+    padding: 16px;
+  }
+}

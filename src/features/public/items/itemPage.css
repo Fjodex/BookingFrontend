@@ -120,3 +120,96 @@
   height: 100%;
   border: none;
 }
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+  /* PAGE */
+  .item-page {
+    padding: 12px;
+  }
+
+  .item-page__card {
+    padding: 16px;
+  }
+
+  /* ========================
+     HEADER (CTA)
+  ======================== */
+
+  .item-page__header {
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .item-page__header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .item-page__price {
+    font-size: 16px;
+  }
+
+  .item-page__book-button {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  /* ========================
+     MAIN (STACK)
+  ======================== */
+
+  .item-page__main {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* IMAGE FULL WIDTH */
+  .item-page__image-frame {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  /* TEXT */
+  .item-page__text h2 {
+    font-size: 20px;
+  }
+
+  .item-page__text p {
+    font-size: 14px;
+  }
+
+  /* ========================
+     SPEC
+  ======================== */
+
+  .item-page__spec {
+    margin-top: 20px;
+  }
+
+  /* ========================
+     VIDEO
+  ======================== */
+
+  .item-page__video {
+    margin-top: 20px;
+  }
+  /* Make main a vertical flex container */
+  .item-page__main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Move title ABOVE image */
+  .item-page__text {
+    order: -1;
+  }
+
+  /* Optional spacing tweak */
+  .item-page__text h2 {
+    margin-bottom: 10px;
+  }
+}

@@ -161,3 +161,66 @@ body,
   overflow: hidden;
   justify-content: center;
 }
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  /* Top bar: stack */
+  .admin-topbar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2px;
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  /* Header layout */
+  .admin-header {
+    padding: 10px 12px;
+    top: 48px; /* adjust because topbar gets taller */
+  }
+
+  .admin-header-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  /* Left section */
+  .admin-header-left {
+    justify-content: center;
+  }
+
+  .admin-logo {
+    height: 36px;
+  }
+
+  .admin-brand {
+    font-size: 18px;
+  }
+
+  /* Right section */
+  .admin-header-right {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* Hide less important stuff */
+  .admin-role {
+    display: none;
+  }
+
+  /* Make logout smaller */
+  .logout-button {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  /* Icon nav bigger tap targets */
+  .icon-button {
+    width: 44px;
+    height: 44px;
+  }
+}
