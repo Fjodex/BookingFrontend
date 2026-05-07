@@ -46,7 +46,7 @@ export default function AdminLayout() {
         <div className="admin-header-content">
           <div className="admin-header-left">
             <img
-              src="http://localhost:5281/images/Logo.svg"
+              src="https://bookingserver-60jc.onrender.com/images/Logo.svg"
               alt="Colorama Logo"
               className="admin-logo"
             />
