@@ -224,3 +224,64 @@ body,
     height: 44px;
   }
 }
+/* =========================
+   LOW HEIGHT MODE (720p)
+========================= */
+
+@media (max-height: 800px) {
+  /* Topbar slimmer */
+  .admin-topbar {
+    padding: 2px 14px;
+    font-size: 12px;
+    visibility: hidden; /* hide to save space, but keep layout stable */
+  }
+
+  /* Header slimmer */
+  .admin-header {
+    padding: 8px 18px;
+    top: 0px;
+    margin-top: -20px;
+  }
+
+  /* Reduce logo size */
+  .admin-logo {
+    height: 34px;
+  }
+
+  /* Smaller brand */
+  .admin-brand {
+    font-size: 18px;
+    padding-top: 0;
+  }
+
+  /* Reduce spacing */
+  .admin-header-left {
+    gap: 8px;
+  }
+
+  .admin-header-right {
+    gap: 10px;
+  }
+
+  .admin-icon-nav {
+    gap: 4px;
+  }
+
+  /* Smaller buttons */
+  .icon-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+  }
+
+  /* Smaller logout */
+  .logout-button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  /* Role smaller */
+  .admin-role {
+    font-size: 13px;
+  }
+}

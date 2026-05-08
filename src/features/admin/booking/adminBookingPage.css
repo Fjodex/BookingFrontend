@@ -131,3 +131,43 @@
     overflow: visible;
   }
 }
+
+/* ========================================
+   LOW HEIGHT DESKTOP (1280x720 etc)
+======================================== */
+
+@media (max-height: 800px) {
+  /* Overall layout tighter */
+  .admin-bookings-calendar,
+  .admin-bookings-list {
+    padding: 14px;
+  }
+
+  /* Items box smaller */
+  .admin-items-box {
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+
+  /* Item rows tighter */
+  .admin-item-row {
+    padding: 4px 6px;
+  }
+
+  /* Smaller color indicators */
+  .item-color {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Smaller add button */
+  .add-item-button {
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  /* Booking list gets more room */
+  .booking-list-wrapper {
+    min-height: 0;
+  }
+}
