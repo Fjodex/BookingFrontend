@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { AdminBooking } from "../types/AdminBooking";
 import "./adminBookingList.css";
+import { Search } from "lucide-react";
 
 type Props = {
   bookings: AdminBooking[];
@@ -50,7 +51,7 @@ export default function AdminBookingList({
             className="search-toggle"
             onClick={() => setSearchOpen((prev) => !prev)}
           >
-            🔍
+            <Search size={18} />
           </button>
 
           <input

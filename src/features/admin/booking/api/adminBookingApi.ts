@@ -76,28 +76,6 @@ export const createAdminBooking = (data: {
     body: JSON.stringify(data),
   });
 
-export const createMultipleAdminBookings = async (data: {
-  itemId: string;
-  dates: string[];
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  customerNotes: string;
-}) => {
-  return Promise.all(
-    data.dates.map((date) =>
-      createAdminBooking({
-        itemId: data.itemId,
-        date,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phoneNumber,
-        customerNotes: data.customerNotes,
-      }),
-    ),
-  );
-};
-
 export const toggleBlockedDay = (date: string) =>
   apiFetch<boolean>("/admin/bookings/toggle-blocked", {
     method: "POST",

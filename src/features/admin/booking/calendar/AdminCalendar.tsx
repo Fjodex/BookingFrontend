@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { AdminBooking } from "../types/AdminBooking";
 import type { AdminCalendarDay } from "../types/AdminCalendar";
 import "./adminCalendar.css";
-
+import { Mail } from "lucide-react";
 const WEEKDAYS = ["Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"];
 
 interface Props {
@@ -131,7 +131,7 @@ export default function AdminCalendar({
                           setActiveNote(b.customerNotes || null);
                         }}
                       >
-                        (!)
+                        <Mail size={14} strokeWidth={2} />
                       </span>
                     )}
                   </div>
