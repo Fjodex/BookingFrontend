@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+
 import "./bookingEditModal.css";
-import { getCalendarMonth } from "../../../public/booking/api/calendar";
+
 import type { AdminBooking } from "../types/AdminBooking";
 
 type Props = {
   booking: AdminBooking;
+
   onClose: () => void;
+
   onSave: (updated: {
     status: AdminBooking["status"];
+
     firstName: string;
     lastName: string;
     phoneNumber: string;
-    customerNotes: string;
-    bookingDate: string;
-  }) => Promise<void>;
-  onDelete: (booking: AdminBooking) => Promise<void>;
-};
 
-type CalendarDay = {
-  date: string;
-  isBooked: boolean;
-  isSelectable: boolean;
-  isBlocked: boolean;
+    customerNotes: string;
+
+    fromDate: string;
+    toDate: string;
+  }) => Promise<void>;
+
+  onDelete: (booking: AdminBooking) => Promise<void>;
 };
 
 export default function BookingEditModal({
@@ -31,83 +32,176 @@ export default function BookingEditModal({
   onSave,
   onDelete,
 }: Props) {
-  const bookingDateObj = new Date(booking.bookingDate);
+  /* ============================================================
+     STATE
+     ============================================================ */
 
   const [status, setStatus] = useState(booking.status);
+
   const [firstName, setFirstName] = useState(booking.firstName ?? "");
+
   const [lastName, setLastName] = useState(booking.lastName ?? "");
+
   const [phoneNumber, setPhoneNumber] = useState(booking.phoneNumber ?? "");
+
   const [customerNotes, setCustomerNotes] = useState(
     booking.customerNotes ?? "",
   );
 
-  const [selectedDate] = useState(booking.bookingDate);
+  const [fromDate, setFromDate] = useState(booking.fromDate);
+
+  const [toDate, setToDate] = useState(booking.toDate);
+
   const [loading, setLoading] = useState(false);
 
-  const [viewYear] = useState(bookingDateObj.getFullYear());
-  const [viewMonth] = useState(bookingDateObj.getMonth() + 1);
-  const [, setCalendarDays] = useState<CalendarDay[]>([]);
-  const [, setShowCalendar] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  /* ============================================================
+     LOCK BODY SCROLL
+     ============================================================ */
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+
     return () => {
       document.body.style.overflow = "auto";
     };
   }, []);
 
-  useEffect(() => {
-    getCalendarMonth(booking.itemId, viewYear, viewMonth).then((data) => {
-      setCalendarDays(data.days);
-    });
-  }, [booking.itemId, viewYear, viewMonth]);
+  /* ============================================================
+     VALIDATION
+     ============================================================ */
 
-  const isValid = firstName.trim() && lastName.trim() && phoneNumber.trim();
+  const isValid =
+    firstName.trim() &&
+    lastName.trim() &&
+    phoneNumber.trim() &&
+    fromDate &&
+    toDate &&
+    new Date(toDate) > new Date(fromDate);
+
+  /* ============================================================
+     SAVE
+     ============================================================ */
 
   const handleSave = async () => {
-    if (!isValid) return;
+    if (!isValid) {
+      setError("Please fill in all required fields.");
 
-    setLoading(true);
+      return;
+    }
 
-    await onSave({
-      status,
-      firstName,
-      lastName,
-      phoneNumber,
-      customerNotes,
-      bookingDate: selectedDate,
-    });
+    try {
+      setError(null);
 
-    setLoading(false);
-    onClose();
+      setLoading(true);
+
+      await onSave({
+        status,
+
+        firstName,
+        lastName,
+        phoneNumber,
+
+        customerNotes,
+
+        fromDate,
+        toDate,
+      });
+
+      onClose();
+    } catch (err) {
+      console.error("Failed to save booking", err);
+
+      setError("Failed to save booking.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  /* ============================================================
+     DELETE
+     ============================================================ */
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to permanently delete this booking?"))
-      return;
+    const confirmed = confirm(
+      "Are you sure you want to permanently delete this booking?",
+    );
 
-    setLoading(true);
-    await onDelete(booking);
-    setLoading(false);
-    onClose();
+    if (!confirmed) return;
+
+    try {
+      setLoading(true);
+
+      await onDelete(booking);
+
+      onClose();
+    } catch (err) {
+      console.error("Failed to delete booking", err);
+
+      setError("Failed to delete booking.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString("sv-SE");
+  };
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
 
   return createPortal(
     <div className="popup-overlay" onClick={onClose}>
       <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+        {/* ======================================================
+            HEADER
+            ====================================================== */}
+
         <h3>{booking.itemName}</h3>
 
-        <label>Date</label>
-        <button
-          type="button"
-          className="date-button"
+        <div className="booking-range-preview">
+          {formatDate(fromDate)} → {formatDate(toDate)}
+        </div>
+
+        {/* ======================================================
+            FROM DATE
+            ====================================================== */}
+
+        <label>Pickup Date</label>
+
+        <input
+          type="date"
           disabled={loading}
-          onClick={() => setShowCalendar((prev) => !prev)}
-        >
-          {new Date(selectedDate).toLocaleDateString("sv-SE")}
-        </button>
+          value={fromDate}
+          onChange={(e) => setFromDate(e.target.value)}
+        />
+
+        {/* ======================================================
+            TO DATE
+            ====================================================== */}
+
+        <label>Return Date</label>
+
+        <input
+          type="date"
+          disabled={loading}
+          value={toDate}
+          onChange={(e) => setToDate(e.target.value)}
+        />
+
+        {/* ======================================================
+            CUSTOMER INFO
+            ====================================================== */}
 
         <label>First name</label>
+
         <input
           disabled={loading}
           value={firstName}
@@ -115,6 +209,7 @@ export default function BookingEditModal({
         />
 
         <label>Last name</label>
+
         <input
           disabled={loading}
           value={lastName}
@@ -122,40 +217,67 @@ export default function BookingEditModal({
         />
 
         <label>Phone number</label>
+
         <input
           disabled={loading}
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
 
+        {/* ======================================================
+            NOTES
+            ====================================================== */}
+
         <label>Customer note</label>
+
         <textarea
           disabled={loading}
           value={customerNotes}
           onChange={(e) => setCustomerNotes(e.target.value)}
-          rows={3}
+          rows={4}
         />
 
+        {/* ======================================================
+            STATUS
+            ====================================================== */}
+
         <label>Status</label>
+
         <select
           disabled={loading}
           value={status}
           onChange={(e) => setStatus(e.target.value as AdminBooking["status"])}
         >
           <option value="Active">Active</option>
+
           <option value="InCustomerCare">In customer’s care</option>
+
           <option value="Completed">Completed</option>
         </select>
 
+        {/* ======================================================
+            ERROR
+            ====================================================== */}
+
+        {error && <div className="modal-error">{error}</div>}
+
+        {/* ======================================================
+            ACTIONS
+            ====================================================== */}
+
         <div className="modal-actions">
           <button disabled={!isValid || loading} onClick={handleSave}>
-            Save
+            {loading ? "Saving..." : "Save"}
           </button>
 
           <button disabled={loading} onClick={onClose} className="secondary">
             Cancel
           </button>
         </div>
+
+        {/* ======================================================
+            DELETE
+            ====================================================== */}
 
         {booking.status === "Active" && (
           <div className="delete-section">

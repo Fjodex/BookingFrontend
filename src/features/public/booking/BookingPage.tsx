@@ -1,24 +1,59 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+
 import type { Item } from "../../sharedTypes/Item";
+
 import CalendarContainer from "./calendar/CalendarContainer";
+
 import { getItem } from "../items/api/itemsApi";
+
 import { createBooking } from "./api/bookings";
+
+import type { CalendarDay } from "./api/calendar";
 
 import "./bookingPage.css";
 
 export default function BookingPage() {
-  const { itemId } = useParams<{ itemId: string }>();
+  const { itemId } = useParams<{
+    itemId: string;
+  }>();
+
+  /* ============================================================
+     ITEM
+     ============================================================ */
 
   const [item, setItem] = useState<Item | null>(null);
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+
+  /* ============================================================
+     CALENDAR
+     ============================================================ */
+
+  const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([]);
+
+  const [fromDate, setFromDate] = useState<string | null>(null);
+
+  const [toDate, setToDate] = useState<string | null>(null);
+
+  const [selectedRange, setSelectedRange] = useState<string[]>([]);
+
+  /* ============================================================
+     CUSTOMER INFO
+     ============================================================ */
 
   const [firstName, setFirstName] = useState("");
+
   const [lastName, setLastName] = useState("");
+
   const [phoneNumber, setPhoneNumber] = useState("");
+
   const [customerNotes, setCustomerNotes] = useState("");
 
+  /* ============================================================
+     UI STATE
+     ============================================================ */
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [showConfirm, setShowConfirm] = useState(false);
 
   const [receipt, setReceipt] = useState<{
@@ -26,21 +61,208 @@ export default function BookingPage() {
     total: number;
   } | null>(null);
 
+  /* ============================================================
+     BOOKING RULES
+     ============================================================ */
+
+  const BOOKING_CUTOFF_HOUR = 17;
+
+  /*
+   * local yyyy-mm-dd
+   */
+
+  const toLocalISODate = (date: Date) => {
+    const year = date.getFullYear();
+
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
+  /*
+   * cannot book in past
+   * or today after cutoff
+   */
+
+  const isPastBookingDate = (date: string) => {
+    const now = new Date();
+
+    const today = toLocalISODate(now);
+
+    /*
+     * before today
+     */
+
+    if (date < today) {
+      return true;
+    }
+
+    /*
+     * today after cutoff
+     */
+
+    if (date === today && now.getHours() >= BOOKING_CUTOFF_HOUR) {
+      return true;
+    }
+
+    return false;
+  };
+
+  /* ============================================================
+     LOAD ITEM
+     ============================================================ */
+
   useEffect(() => {
     if (!itemId) return;
+
     getItem(itemId).then(setItem);
   }, [itemId]);
 
-  const toggleDate = (date: string) => {
-    setSelectedDates((prev) =>
-      prev.includes(date) ? prev.filter((d) => d !== date) : [...prev, date],
-    );
+  /* ============================================================
+     VALID RANGE BUILDER
+     ============================================================ */
+
+  const buildValidRange = (start: string, end: string) => {
+    const dates: string[] = [];
+
+    const current = new Date(start);
+
+    const last = new Date(end);
+
+    while (current <= last) {
+      const iso = toLocalISODate(current);
+
+      /*
+       * cannot book in past
+       */
+
+      if (isPastBookingDate(iso)) {
+        return null;
+      }
+
+      const day = calendarDays.find((d) => d.date === iso);
+
+      /*
+       * cannot pass through bookings
+       *
+       * CLOSED DAYS ARE ALLOWED
+       */
+
+      if (day?.isBooked) {
+        return null;
+      }
+
+      dates.push(iso);
+
+      current.setDate(current.getDate() + 1);
+    }
+
+    return dates;
   };
 
+  /* ============================================================
+     DATE SELECTION
+     ============================================================ */
+
+  const selectDate = (date: string) => {
+    /*
+     * cannot select invalid start date
+     */
+
+    if (!fromDate && isPastBookingDate(date)) {
+      return;
+    }
+
+    /*
+     * FIRST CLICK
+     */
+
+    if (!fromDate) {
+      const day = calendarDays.find((d) => d.date === date);
+
+      /*
+       * cannot start on booked date
+       */
+
+      if (day?.isBooked) {
+        return;
+      }
+
+      setFromDate(date);
+
+      setToDate(null);
+
+      setSelectedRange([date]);
+
+      return;
+    }
+
+    /*
+     * SECOND CLICK
+     */
+
+    if (!toDate) {
+      /*
+       * cannot select before start
+       */
+
+      if (new Date(date) < new Date(fromDate)) {
+        return;
+      }
+
+      const range = buildValidRange(fromDate, date);
+
+      /*
+       * invalid range
+       */
+
+      if (!range) {
+        return;
+      }
+
+      setToDate(date);
+
+      setSelectedRange(range);
+
+      return;
+    }
+
+    /*
+     * THIRD CLICK RESETS
+     */
+
+    if (isPastBookingDate(date)) {
+      return;
+    }
+
+    const day = calendarDays.find((d) => d.date === date);
+
+    if (day?.isBooked) {
+      return;
+    }
+
+    setFromDate(date);
+
+    setToDate(null);
+
+    setSelectedRange([date]);
+  };
+
+  /* ============================================================
+     CONFIRM MODAL
+     ============================================================ */
+
   const handleConfirmClick = () => {
-    if (!item || selectedDates.length === 0) return;
+    if (!item || selectedRange.length === 0) return;
+
     setShowConfirm(true);
   };
+
+  /* ============================================================
+     CREATE BOOKING
+     ============================================================ */
 
   const handleConfirmBooking = async () => {
     if (!item) return;
@@ -50,38 +272,74 @@ export default function BookingPage() {
 
       await createBooking({
         itemId: item.id,
-        dates: selectedDates,
+
+        fromDate: selectedRange[0],
+
+        toDate: selectedRange[selectedRange.length - 1],
+
         firstName,
         lastName,
         phoneNumber,
+
         customerNotes,
       });
 
-      const total = selectedDates.length * item.pricePerDay;
+      const total = selectedRange.length * item.pricePerDay;
 
       setReceipt({
-        dates: [...selectedDates],
+        dates: [...selectedRange],
+
         total,
       });
 
-      setSelectedDates([]);
+      /*
+       * reset
+       */
+
+      setFromDate(null);
+
+      setToDate(null);
+
+      setSelectedRange([]);
+
       setFirstName("");
+
       setLastName("");
+
       setPhoneNumber("");
+
       setCustomerNotes("");
+
       setShowConfirm(false);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  /* ============================================================
+     LOADING
+     ============================================================ */
+
   if (!item) return <div>Laddar...</div>;
 
-  const totalPrice = selectedDates.length * item.pricePerDay;
+  /* ============================================================
+     PRICE
+     ============================================================ */
+
+  const rentalDays = selectedRange.length;
+
+  const totalPrice = rentalDays * item.pricePerDay;
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
 
   return (
     <div className="booking-page">
-      {/* HEADER */}
+      {/* ======================================================
+          HEADER
+          ====================================================== */}
+
       <div className="selected-item-card">
         <div className="selected-left">
           <Link to={`/items/${item.id}`} className="back-button">
@@ -103,7 +361,9 @@ export default function BookingPage() {
 
           <div className="selected-text">
             <div className="selected-label">Vald</div>
+
             <div className="selected-name">{item.name}</div>
+
             <div className="selected-description">
               {item.productDescription}
             </div>
@@ -112,24 +372,38 @@ export default function BookingPage() {
 
         <div className="selected-right">
           <div className="price-label">Pris</div>
+
           <div className="price-value">{item.pricePerDay} SEK / dag</div>
         </div>
       </div>
 
-      {/* MAIN */}
+      {/* ======================================================
+          MAIN
+          ====================================================== */}
+
       <div className="booking-layout">
-        {/* CALENDAR */}
+        {/* ==================================================
+            CALENDAR
+            ================================================== */}
+
         <div className="calendar-wrapper">
           <CalendarContainer
             itemId={item.id}
-            selectedDates={selectedDates}
-            onToggleDate={toggleDate}
+            selectedRange={selectedRange}
+            onSelect={selectDate}
+            onDaysLoaded={setCalendarDays}
           />
         </div>
 
-        {/* SIDEBAR */}
+        {/* ==================================================
+            SIDEBAR
+            ================================================== */}
+
         <div className="booking-sidebar">
-          {/* FORM */}
+          {/* ==============================================
+              FORM
+              ============================================== */}
+
           <div className="form-card">
             <div className="form-title">Kontaktuppgifter</div>
 
@@ -137,6 +411,7 @@ export default function BookingPage() {
               <span className="field-label">
                 Förnamn <span className="required">*</span>
               </span>
+
               <input
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -147,6 +422,7 @@ export default function BookingPage() {
               <span className="field-label">
                 Efternamn <span className="required">*</span>
               </span>
+
               <input
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
@@ -157,6 +433,7 @@ export default function BookingPage() {
               <span className="field-label">
                 Telefonnummer <span className="required">*</span>
               </span>
+
               <input
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -165,6 +442,7 @@ export default function BookingPage() {
 
             <div className="field">
               <span className="field-label">Meddelande (valfritt)</span>
+
               <textarea
                 value={customerNotes}
                 onChange={(e) => setCustomerNotes(e.target.value)}
@@ -173,15 +451,19 @@ export default function BookingPage() {
             </div>
           </div>
 
-          {/* SUMMARY */}
+          {/* ==============================================
+              SUMMARY
+              ============================================== */}
+
           <div className="summary-box">
             <h3>Sammanställning</h3>
 
             <div className="summary-grid">
               <div className="summary-left">
-                {selectedDates.map((d) => (
+                {selectedRange.map((d) => (
                   <div key={d} className="summary-row">
                     <span>{d}</span>
+
                     <span>{item.pricePerDay} SEK</span>
                   </div>
                 ))}
@@ -190,12 +472,14 @@ export default function BookingPage() {
               <div className="summary-right">
                 <div className="summary-info">
                   <div className="summary-info-title">Information</div>
+
                   <p>{item.details}</p>
                 </div>
 
                 <div className="summary-footer">
                   <div className="total">
                     <span>Totalt</span>
+
                     <strong>{totalPrice} SEK</strong>
                   </div>
 
@@ -203,7 +487,7 @@ export default function BookingPage() {
                     className="confirm-button"
                     disabled={
                       isSubmitting ||
-                      !selectedDates.length ||
+                      !selectedRange.length ||
                       !firstName ||
                       !lastName ||
                       !phoneNumber
@@ -217,31 +501,40 @@ export default function BookingPage() {
             </div>
           </div>
 
-          {/* RECEIPT */}
+          {/* ==============================================
+              RECEIPT
+              ============================================== */}
+
           {receipt && (
             <div className="receipt">
               <h3>Bokningskvitto</h3>
+
               {receipt.dates.map((d) => (
                 <div key={d}>{d}</div>
               ))}
+
               <strong>Totalt: {receipt.total} SEK</strong>
             </div>
           )}
         </div>
       </div>
 
-      {/* MODAL */}
+      {/* ======================================================
+          MODAL
+          ====================================================== */}
+
       {showConfirm && (
         <div className="booking-modal-overlay">
           <div className="booking-modal">
             <h3>Bekräfta bokning</h3>
 
-            <p>{selectedDates.length} dag(ar)</p>
+            <p>{rentalDays} dag(ar)</p>
 
             <div className="modal-summary">
-              {selectedDates.map((d) => (
+              {selectedRange.map((d) => (
                 <div key={d} className="modal-row">
                   <span>{d}</span>
+
                   <span>{item.pricePerDay} SEK</span>
                 </div>
               ))}
@@ -254,6 +547,7 @@ export default function BookingPage() {
             {customerNotes && (
               <div className="modal-notes">
                 <strong>Meddelande:</strong>
+
                 <p>{customerNotes}</p>
               </div>
             )}

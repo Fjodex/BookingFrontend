@@ -3,6 +3,6 @@ import type { AdminBooking } from "./AdminBooking";
 
 export interface AdminCalendarDay {
   date: string;
-  isBlocked: boolean;
+  isClosed: boolean;
   bookings: AdminBooking[];
 }

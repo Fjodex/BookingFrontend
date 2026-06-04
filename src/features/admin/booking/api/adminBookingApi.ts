@@ -55,7 +55,8 @@ export async function updateBooking(
     lastName: string;
     phoneNumber: string;
     customerNotes: string;
-    bookingDate: string;
+    fromDate: string;
+    toDate: string;
   },
 ) {
   return apiFetch(`/admin/bookings/${id}`, {
@@ -65,7 +66,8 @@ export async function updateBooking(
 }
 export const createAdminBooking = (data: {
   itemId: string;
-  date: string;
+  fromDate: string;
+  toDate: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -74,12 +76,6 @@ export const createAdminBooking = (data: {
   apiFetch("/admin/bookings/create", {
     method: "POST",
     body: JSON.stringify(data),
-  });
-
-export const toggleBlockedDay = (date: string) =>
-  apiFetch<boolean>("/admin/bookings/toggle-blocked", {
-    method: "POST",
-    body: JSON.stringify(date),
   });
 
 export async function deleteBooking(id: string) {

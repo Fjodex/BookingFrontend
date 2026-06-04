@@ -1,42 +1,125 @@
 import { useEffect, useState } from "react";
+
 import Calendar from "./Calendar";
+
 import { getCalendarMonth, type CalendarDay } from "../api/calendar";
+
 import "./calendarContainer.css";
+
 interface Props {
   itemId: string;
-  selectedDates: string[];
-  onToggleDate: (date: string) => void;
+
+  selectedRange: string[];
+
+  onSelect: (date: string) => void;
+
+  onDaysLoaded?: (days: CalendarDay[]) => void;
 }
 
 export default function CalendarContainer({
   itemId,
-  selectedDates,
-  onToggleDate,
+  selectedRange,
+  onSelect,
+  onDaysLoaded,
 }: Props) {
+  /* ============================================================
+     INITIAL DATE
+     ============================================================ */
+
   const now = new Date();
 
+  /* ============================================================
+     STATE
+     ============================================================ */
+
   const [year, setYear] = useState(now.getFullYear());
-  const [month, setMonth] = useState(now.getMonth() + 1); // 1–12
+
+  const [month, setMonth] = useState(now.getMonth() + 1);
+
   const [days, setDays] = useState<CalendarDay[]>([]);
+
+  /* ============================================================
+     LOAD CALENDAR
+     ============================================================ */
 
   useEffect(() => {
     getCalendarMonth(itemId, year, month).then((res) => {
       setDays(res.days);
+
+      /*
+       * expose to parent
+       */
+
+      onDaysLoaded?.(res.days);
     });
-  }, [itemId, year, month]);
+  }, [itemId, year, month, onDaysLoaded]);
+
+  /* ============================================================
+     NEXT MONTH
+     ============================================================ */
 
   const nextMonth = () => {
-    setMonth((m) => (m === 12 ? 1 : m + 1));
-    if (month === 12) setYear((y) => y + 1);
+    if (month === 12) {
+      setMonth(1);
+
+      setYear((y) => y + 1);
+
+      return;
+    }
+
+    setMonth((m) => m + 1);
   };
 
+  /* ============================================================
+     PREVIOUS MONTH
+     ============================================================ */
+
   const prevMonth = () => {
-    setMonth((m) => (m === 1 ? 12 : m - 1));
-    if (month === 1) setYear((y) => y - 1);
+    const current = new Date();
+
+    const currentYear = current.getFullYear();
+
+    const currentMonth = current.getMonth() + 1;
+
+    /*
+     * prevent navigating
+     * before current month
+     */
+
+    if (year === currentYear && month <= currentMonth) {
+      return;
+    }
+
+    if (month === 1) {
+      setMonth(12);
+
+      setYear((y) => y - 1);
+
+      return;
+    }
+
+    setMonth((m) => m - 1);
   };
+
+  /* ============================================================
+     LABEL
+     ============================================================ */
+
+  const monthLabel = new Date(year, month - 1).toLocaleDateString("sv-SE", {
+    month: "long",
+    year: "numeric",
+  });
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
 
   return (
     <div className="calendar-panel">
+      {/* ======================================================
+          NAVIGATION
+          ====================================================== */}
+
       <div className="calendar-nav">
         <button
           className="calendar-nav-button"
@@ -46,12 +129,7 @@ export default function CalendarContainer({
           ‹
         </button>
 
-        <div className="calendar-nav-title">
-          {new Date(year, month - 1).toLocaleDateString("sv-SE", {
-            month: "long",
-            year: "numeric",
-          })}
-        </div>
+        <div className="calendar-nav-title">{monthLabel}</div>
 
         <button
           className="calendar-nav-button"
@@ -62,10 +140,14 @@ export default function CalendarContainer({
         </button>
       </div>
 
+      {/* ======================================================
+          CALENDAR
+          ====================================================== */}
+
       <Calendar
         days={days}
-        selectedDates={selectedDates}
-        onToggleDate={onToggleDate}
+        selectedRange={selectedRange}
+        onSelectDate={onSelect}
       />
     </div>
   );

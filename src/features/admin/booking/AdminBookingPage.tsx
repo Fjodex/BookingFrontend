@@ -1,12 +1,17 @@
 import { useEffect, useState, useRef } from "react";
+
 import AdminCalendar from "./calendar/AdminCalendar";
 import AdminBookingList from "./bookingList/AdminBookingList";
 import BookingEditModal from "./calendar/BookingEditModal";
 import AdminItemsBox from "./itemBox/AdminItemBox";
 import AdminDayPopup from "./calendar/AdminDayPopup";
+
 import ConfirmModal from "../shared/components/ConfirmModal";
+
 import { getAdminItems } from "../api/adminItemApi";
+
 import { getAdminCalendar } from "./api/adminCalendarApi";
+
 import {
   getAdminBookings,
   updateBooking,
@@ -28,11 +33,15 @@ export default function AdminBookingsPage() {
   const now = new Date();
 
   const [year, setYear] = useState(now.getFullYear());
+
   const [month, setMonth] = useState(now.getMonth() + 1);
 
   const [days, setDays] = useState<AdminCalendarDay[]>([]);
+
   const [bookings, setBookings] = useState<AdminBooking[]>([]);
+
   const [items, setItems] = useState<Item[]>([]);
+
   const [visibleItemIds, setVisibleItemIds] = useState<Set<string>>(new Set());
 
   const [selectedBooking, setSelectedBooking] = useState<AdminBooking | null>(
@@ -41,7 +50,10 @@ export default function AdminBookingsPage() {
 
   const [selectedDay, setSelectedDay] = useState<AdminCalendarDay | null>(null);
 
-  /* 🔥 Confirm modal state */
+  /* ============================================================
+     CONFIRM MODAL
+     ============================================================ */
+
   const [confirmBooking, setConfirmBooking] = useState<AdminBooking | null>(
     null,
   );
@@ -50,30 +62,82 @@ export default function AdminBookingsPage() {
     "return" | "clear" | "delete" | null
   >(null);
 
+  /* ============================================================
+     SYNC
+     ============================================================ */
+
   const lastUpdatedRef = useRef<string | null>(null);
 
-  /* ---------------- INITIAL LOAD ---------------- */
+  /* ============================================================
+     INITIAL LOAD
+     ============================================================ */
 
   useEffect(() => {
-    getAdminItems().then((items) => {
-      setItems(items);
-      setVisibleItemIds(new Set(items.map((i) => i.id)));
-    });
+    const loadItems = async () => {
+      try {
+        const itemData = await getAdminItems();
+
+        setItems(itemData);
+
+        setVisibleItemIds(new Set(itemData.map((i) => i.id)));
+      } catch (err) {
+        console.error("Failed to load items", err);
+      }
+    };
+
+    void loadItems();
   }, []);
 
-  /* ---------------- REFRESH ---------------- */
+  /* ============================================================
+     REFRESH
+     ============================================================ */
 
   const refreshAll = async () => {
-    const [calendarData, bookingData] = await Promise.all([
-      getAdminCalendar(year, month),
-      getAdminBookings(),
-    ]);
+    try {
+      const [calendarData, bookingData] = await Promise.all([
+        getAdminCalendar(year, month),
+        getAdminBookings(),
+      ]);
 
-    setDays(calendarData);
-    setBookings(bookingData);
+      setDays(calendarData);
+
+      setBookings(bookingData);
+    } catch (err) {
+      console.error("Failed to refresh data", err);
+    }
   };
 
-  /* ---------------- POLLING SYNC ---------------- */
+  const syncTimestamp = async () => {
+    try {
+      const ts = await getLastUpdated();
+
+      lastUpdatedRef.current = ts;
+    } catch (err) {
+      console.error("Failed to sync timestamp", err);
+    }
+  };
+
+  const refreshAndSync = async () => {
+    await refreshAll();
+
+    await syncTimestamp();
+  };
+
+  /* ============================================================
+     LOAD MONTH DATA
+     ============================================================ */
+
+  useEffect(() => {
+    const loadMonthData = async () => {
+      await refreshAll();
+    };
+
+    void loadMonthData();
+  }, [year, month]);
+
+  /* ============================================================
+     POLLING SYNC
+     ============================================================ */
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -82,6 +146,7 @@ export default function AdminBookingsPage() {
 
         if (serverTimestamp !== lastUpdatedRef.current) {
           await refreshAll();
+
           lastUpdatedRef.current = serverTimestamp;
         }
       } catch (err) {
@@ -92,70 +157,108 @@ export default function AdminBookingsPage() {
     return () => clearInterval(interval);
   }, [year, month]);
 
-  const syncTimestamp = async () => {
-    const ts = await getLastUpdated();
-    lastUpdatedRef.current = ts;
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    refreshAll();
-  }, [year, month]);
-
-  /* ---------------- BOOKING ACTIONS ---------------- */
+  /* ============================================================
+     BOOKING ACTIONS
+     ============================================================ */
 
   const handleBookingSave = async (updated: unknown) => {
     if (!selectedBooking) return;
-    const bookingData = updated as AdminBookingRequest;
-    await updateBooking(
-      selectedBooking.id,
-      bookingData as Parameters<typeof updateBooking>[1],
-    );
-    await refreshAll();
-    await syncTimestamp();
 
-    setSelectedBooking(null);
+    try {
+      const bookingData = updated as AdminBookingRequest;
+
+      await updateBooking(
+        selectedBooking.id,
+        bookingData as Parameters<typeof updateBooking>[1],
+      );
+
+      await refreshAndSync();
+
+      setSelectedBooking(null);
+    } catch (err) {
+      console.error("Failed to update booking", err);
+    }
   };
 
   const handleHandover = async (booking: AdminBooking) => {
-    await handoverBooking(booking.id);
-    await refreshAll();
-    await syncTimestamp();
+    try {
+      await handoverBooking(booking.id);
+
+      await refreshAndSync();
+    } catch (err) {
+      console.error("Failed to handover booking", err);
+    }
   };
 
   const handleReturn = (booking: AdminBooking) => {
     setConfirmBooking(booking);
+
     setConfirmAction("return");
   };
 
   const handleClear = (booking: AdminBooking) => {
     setConfirmBooking(booking);
+
     setConfirmAction("clear");
   };
 
-  const handleDelete = async (booking: AdminBooking) => {
+  const handleDelete = async (booking: AdminBooking): Promise<void> => {
     setConfirmBooking(booking);
     setConfirmAction("delete");
   };
 
-  /* ---------------- FILTER ---------------- */
+  /* ============================================================
+     FILTERING
+     ============================================================ */
 
   const toggleItem = (id: string) => {
     setVisibleItemIds((prev) => {
       const next = new Set(prev);
+
       if (next.has(id)) {
         next.delete(id);
       } else {
         next.add(id);
       }
+
       return next;
     });
   };
 
-  /* ---------------- RENDER ---------------- */
+  /* ============================================================
+     FILTERED DAYS
+     ============================================================ */
+
+  const filteredDays = days.map((day) => ({
+    ...day,
+
+    bookings:
+      day.bookings?.filter((booking) => visibleItemIds.has(booking.itemId)) ??
+      [],
+
+    isBooked:
+      day.bookings?.some((booking) => visibleItemIds.has(booking.itemId)) ??
+      false,
+  }));
+
+  /* ============================================================
+     FILTERED BOOKINGS
+     ============================================================ */
+
+  const filteredBookings = bookings.filter((booking) =>
+    visibleItemIds.has(booking.itemId),
+  );
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
 
   return (
     <div className="admin-bookings-layout">
+      {/* ========================================================
+          EDIT MODAL
+          ======================================================== */}
+
       {selectedBooking && (
         <BookingEditModal
           booking={selectedBooking}
@@ -165,18 +268,26 @@ export default function AdminBookingsPage() {
         />
       )}
 
+      {/* ========================================================
+          DAY POPUP
+          ======================================================== */}
+
       {selectedDay && (
         <AdminDayPopup
           day={selectedDay}
           items={items}
           onClose={() => setSelectedDay(null)}
-          onRefresh={refreshAll}
+          onRefresh={refreshAndSync}
         />
       )}
 
+      {/* ========================================================
+          CALENDAR
+          ======================================================== */}
+
       <div className="admin-bookings-calendar">
         <AdminCalendar
-          days={days}
+          days={filteredDays}
           year={year}
           month={month}
           setYear={setYear}
@@ -187,6 +298,10 @@ export default function AdminBookingsPage() {
         />
       </div>
 
+      {/* ========================================================
+          SIDEBAR
+          ======================================================== */}
+
       <div className="admin-bookings-list">
         <AdminItemsBox
           items={items}
@@ -195,7 +310,7 @@ export default function AdminBookingsPage() {
         />
 
         <AdminBookingList
-          bookings={bookings}
+          bookings={filteredBookings}
           onHandover={handleHandover}
           onReturn={handleReturn}
           onClear={handleClear}
@@ -203,7 +318,10 @@ export default function AdminBookingsPage() {
         />
       </div>
 
-      {/* 🔥 CONFIRM MODAL */}
+      {/* ========================================================
+          CONFIRM MODAL
+          ======================================================== */}
+
       <ConfirmModal
         open={!!confirmBooking}
         title={
@@ -230,28 +348,35 @@ export default function AdminBookingsPage() {
         cancelText="Avbryt"
         onCancel={() => {
           setConfirmBooking(null);
+
           setConfirmAction(null);
         }}
         onConfirm={async () => {
-          if (!confirmBooking || !confirmAction) return;
-
-          if (confirmAction === "return") {
-            await returnBooking(confirmBooking.id);
+          if (!confirmBooking || !confirmAction) {
+            return;
           }
 
-          if (confirmAction === "clear") {
-            await clearBooking(confirmBooking.id);
+          try {
+            if (confirmAction === "return") {
+              await returnBooking(confirmBooking.id);
+            }
+
+            if (confirmAction === "clear") {
+              await clearBooking(confirmBooking.id);
+            }
+
+            if (confirmAction === "delete") {
+              await deleteBooking(confirmBooking.id);
+            }
+
+            await refreshAndSync();
+
+            setConfirmBooking(null);
+
+            setConfirmAction(null);
+          } catch (err) {
+            console.error("Failed to perform booking action", err);
           }
-
-          if (confirmAction === "delete") {
-            await deleteBooking(confirmBooking.id);
-          }
-
-          await refreshAll();
-          await syncTimestamp();
-
-          setConfirmBooking(null);
-          setConfirmAction(null);
         }}
       />
     </div>

@@ -1,35 +1,65 @@
 import type { CalendarDay } from "../api/calendar";
-import "./calendarDayItem.css";
 
 interface Props {
   day: CalendarDay;
+
   isSelected: boolean;
-  onToggle: (date: string) => void;
+
+  isDisabled: boolean;
+
+  onSelect: (date: string) => void;
 }
 
-export default function CalendarDayItem({ day, isSelected, onToggle }: Props) {
-  const dayNumber = new Date(day.date).getDate();
+export default function CalendarDayItem({
+  day,
+  isSelected,
+  isDisabled,
+  onSelect,
+}: Props) {
+  /* ============================================================
+     STATE
+     ============================================================ */
 
-  const isDisabled = !day.isSelectable || day.isBooked || day.isBlocked;
+  const isBooked = day.isBooked;
+
+  const isClosed = !day.canReturn;
+
+  /* ============================================================
+     CLASSNAMES
+     ============================================================ */
 
   const classNames = [
-    "calendar-cell",
-    isDisabled && "disabled",
-    day.isBooked && "booked",
-    day.isBlocked && "blocked",
-    isSelected && "selected",
+    "calendar-day",
+
+    isSelected ? "selected" : "",
+
+    isBooked ? "booked" : "",
+
+    isClosed ? "closed" : "",
+
+    isDisabled ? "disabled" : "",
   ]
     .filter(Boolean)
     .join(" ");
+
+  /* ============================================================
+     DAY NUMBER
+     ============================================================ */
+
+  const dayNumber = new Date(day.date).getDate();
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
 
   return (
     <button
       type="button"
       className={classNames}
       disabled={isDisabled}
-      onClick={() => !isDisabled && onToggle(day.date)}
+      onClick={() => onSelect(day.date)}
     >
-      {dayNumber}
+      <span>{dayNumber}</span>
     </button>
   );
 }

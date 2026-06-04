@@ -2,9 +2,10 @@ import { apiFetch } from "../../../../api/http";
 
 export interface CalendarDay {
   date: string;
+
   isBooked: boolean;
-  isSelectable: boolean;
-  isBlocked: boolean;
+
+  canReturn: boolean;
 }
 
 export interface CalendarMonth {
