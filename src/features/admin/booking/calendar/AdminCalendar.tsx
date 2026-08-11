@@ -19,8 +19,6 @@ interface Props {
 
   setMonth: React.Dispatch<React.SetStateAction<number>>;
 
-  visibleItemIds: Set<string>;
-
   onBookingClick: (booking: AdminBooking) => void;
 
   onDayClick: (day: AdminCalendarDay) => void;
@@ -32,7 +30,6 @@ export default function AdminCalendar({
   month,
   setYear,
   setMonth,
-  visibleItemIds,
   onBookingClick,
   onDayClick,
 }: Props) {
@@ -60,7 +57,7 @@ export default function AdminCalendar({
 
   const totalCells = 42;
 
-  const trailingEmpty = totalCells - (startOffset + days.length);
+  const trailingEmpty = Math.max(0, totalCells - (startOffset + days.length));
 
   const monthLabel = new Date(year, month - 1).toLocaleDateString("sv-SE", {
     month: "long",
@@ -69,18 +66,6 @@ export default function AdminCalendar({
 
   const capitalizedMonth =
     monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1);
-
-  /* ============================================================
-     HELPERS
-     ============================================================ */
-
-  const formatBookingRange = (booking: AdminBooking) => {
-    const from = new Date(booking.fromDate);
-
-    const to = new Date(booking.toDate);
-
-    return `${from.getDate()}/${from.getMonth() + 1} → ${to.getDate()}/${to.getMonth() + 1}`;
-  };
 
   /* ============================================================
      RENDER
@@ -121,8 +106,8 @@ export default function AdminCalendar({
           ======================================================== */}
 
       <div className="calendar-weekdays">
-        {WEEKDAYS.map((d) => (
-          <div key={d}>{d}</div>
+        {WEEKDAYS.map((day) => (
+          <div key={day}>{day}</div>
         ))}
       </div>
 
@@ -150,62 +135,53 @@ export default function AdminCalendar({
 
           const isToday = dateObj.getTime() === today.getTime();
 
-          const filteredBookings = day.bookings.filter((b) =>
-            visibleItemIds.has(b.itemId),
-          );
-
           return (
             <div
               key={day.date}
-              className={`calendar-day
+              className={`
+                calendar-day
                 ${day.isClosed ? "closed" : ""}
                 ${isPast ? "past" : "future"}
                 ${isToday ? "today" : ""}
               `}
               onClick={() => onDayClick(day)}
             >
-              {/* ==================================================
-                  DAY NUMBER
-                  ================================================== */}
+              {/* DAY NUMBER */}
 
               <div className="day-number">{dateObj.getDate()}</div>
 
-              {/* ==================================================
-                  CLOSED LABEL
-                  ================================================== */}
+              {/* CLOSED LABEL */}
 
               {day.isClosed && <div className="closed-label">Stängt</div>}
 
-              {/* ==================================================
-                  BOOKINGS
-                  ================================================== */}
+              {/* BOOKINGS */}
 
               <div className="calendar-bookings">
-                {filteredBookings.slice(0, 3).map((b) => (
+                {day.bookings.slice(0, 3).map((booking) => (
                   <div
-                    key={b.id}
+                    key={booking.id}
                     className="calendar-booking"
                     style={{
-                      backgroundColor: b.color,
+                      backgroundColor: booking.color,
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
 
-                      onBookingClick(b);
+                      onBookingClick(booking);
                     }}
                   >
                     <div className="booking-main">
                       <span className="booking-name">
-                        {b.firstName} {b.lastName}
+                        {booking.firstName} {booking.lastName}
                       </span>
 
-                      {b.customerNotes && (
+                      {booking.customerNotes && (
                         <span
                           className="note-icon"
                           onClick={(e) => {
                             e.stopPropagation();
 
-                            setActiveNote(b.customerNotes || null);
+                            setActiveNote(booking.customerNotes ?? null);
                           }}
                         >
                           <Mail size={14} strokeWidth={2} />
@@ -216,13 +192,11 @@ export default function AdminCalendar({
                 ))}
               </div>
 
-              {/* ==================================================
-                  BOOKING COUNTER
-                  ================================================== */}
+              {/* BOOKING COUNTER */}
 
-              {filteredBookings.length > 3 && (
+              {day.bookings.length > 3 && (
                 <div className="booking-counter">
-                  +{filteredBookings.length - 3} fler
+                  +{day.bookings.length - 3} fler
                 </div>
               )}
             </div>

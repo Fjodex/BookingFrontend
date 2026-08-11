@@ -7,21 +7,12 @@ import { getCalendarMonth, type CalendarDay } from "../api/calendar";
 import "./calendarContainer.css";
 
 interface Props {
-  itemId: string;
-
   selectedRange: string[];
 
   onSelect: (date: string) => void;
-
-  onDaysLoaded?: (days: CalendarDay[]) => void;
 }
 
-export default function CalendarContainer({
-  itemId,
-  selectedRange,
-  onSelect,
-  onDaysLoaded,
-}: Props) {
+export default function CalendarContainer({ selectedRange, onSelect }: Props) {
   /* ============================================================
      INITIAL DATE
      ============================================================ */
@@ -39,20 +30,29 @@ export default function CalendarContainer({
   const [days, setDays] = useState<CalendarDay[]>([]);
 
   /* ============================================================
+     SELECTED DATE
+     ============================================================ */
+
+  /*
+   * The first date in selectedRange is the pickup date.
+   *
+   * When no date is selected:
+   *     selectedDate = undefined
+   *
+   * When a pickup date is selected:
+   *     selectedDate = pickup date
+   */
+  const selectedDate = selectedRange.length > 0 ? selectedRange[0] : undefined;
+
+  /* ============================================================
      LOAD CALENDAR
      ============================================================ */
 
   useEffect(() => {
-    getCalendarMonth(itemId, year, month).then((res) => {
+    getCalendarMonth(year, month, selectedDate).then((res) => {
       setDays(res.days);
-
-      /*
-       * expose to parent
-       */
-
-      onDaysLoaded?.(res.days);
     });
-  }, [itemId, year, month, onDaysLoaded]);
+  }, [year, month, selectedDate]);
 
   /* ============================================================
      NEXT MONTH
@@ -61,7 +61,6 @@ export default function CalendarContainer({
   const nextMonth = () => {
     if (month === 12) {
       setMonth(1);
-
       setYear((y) => y + 1);
 
       return;
@@ -82,17 +81,14 @@ export default function CalendarContainer({
     const currentMonth = current.getMonth() + 1;
 
     /*
-     * prevent navigating
-     * before current month
+     * Prevent navigating before the current month.
      */
-
     if (year === currentYear && month <= currentMonth) {
       return;
     }
 
     if (month === 1) {
       setMonth(12);
-
       setYear((y) => y - 1);
 
       return;
@@ -115,7 +111,7 @@ export default function CalendarContainer({
      ============================================================ */
 
   return (
-    <div className="calendar-panel">
+    <div>
       {/* ======================================================
           NAVIGATION
           ====================================================== */}

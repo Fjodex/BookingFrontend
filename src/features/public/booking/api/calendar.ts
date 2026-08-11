@@ -2,10 +2,10 @@ import { apiFetch } from "../../../../api/http";
 
 export interface CalendarDay {
   date: string;
-
-  isBooked: boolean;
-
-  canReturn: boolean;
+  selectable: boolean;
+  isSelected: boolean;
+  openTime: string | null;
+  closeTime: string | null;
 }
 
 export interface CalendarMonth {
@@ -15,9 +15,15 @@ export interface CalendarMonth {
 }
 
 export function getCalendarMonth(
-  itemId: string,
   year: number,
   month: number,
+  selectedDate?: string,
 ): Promise<CalendarMonth> {
-  return apiFetch<CalendarMonth>(`/items/${itemId}/calendar/${year}/${month}`);
+  let url = `/calendar/${year}/${month}`;
+
+  if (selectedDate) {
+    url += `?selectedDate=${encodeURIComponent(selectedDate)}`;
+  }
+
+  return apiFetch<CalendarMonth>(url);
 }

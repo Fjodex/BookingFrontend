@@ -1,21 +1,30 @@
-// api/admin/adminBookings.ts
 import { apiFetch } from "../../../../api/http";
 import type { AdminBooking } from "../types/AdminBooking";
 
 /**
- * Get all active bookings for admin views
+ * Get all active bookings for admin views.
  */
 export function getAdminBookings(): Promise<AdminBooking[]> {
   return apiFetch("/admin/bookings/list");
 }
+
 /**
- * Booking history (used for Arend creation page)
+ * Get booking history.
  */
 export function getBookingHistory(): Promise<AdminBooking[]> {
   return apiFetch("/admin/bookings/history");
 }
+
 /**
- * Hand item over to customer
+ * Get the timestamp of the latest booking change.
+ */
+export function getLastUpdated(): Promise<string> {
+  return apiFetch("/admin/bookings/last-updated");
+}
+
+/**
+ * Hand item over to customer.
+ *
  * Active → InCustomerCare
  */
 export function handoverBooking(id: string): Promise<void> {
@@ -25,7 +34,8 @@ export function handoverBooking(id: string): Promise<void> {
 }
 
 /**
- * Item returned by customer
+ * Item returned by customer.
+ *
  * InCustomerCare → Completed
  */
 export function returnBooking(id: string): Promise<void> {
@@ -35,7 +45,8 @@ export function returnBooking(id: string): Promise<void> {
 }
 
 /**
- * Final GDPR clear
+ * Final GDPR clear.
+ *
  * Completed → Cleared
  */
 export function clearBooking(id: string): Promise<void> {
@@ -43,11 +54,11 @@ export function clearBooking(id: string): Promise<void> {
     method: "POST",
   });
 }
-export async function getLastUpdated(): Promise<string> {
-  return apiFetch("/admin/bookings/last-updated");
-}
 
-export async function updateBooking(
+/**
+ * Update an existing booking.
+ */
+export function updateBooking(
   id: string,
   data: {
     status: string;
@@ -64,7 +75,11 @@ export async function updateBooking(
     body: JSON.stringify(data),
   });
 }
-export const createAdminBooking = (data: {
+
+/**
+ * Create a booking from the admin interface.
+ */
+export function createAdminBooking(data: {
   itemId: string;
   fromDate: string;
   toDate: string;
@@ -72,13 +87,17 @@ export const createAdminBooking = (data: {
   lastName: string;
   phoneNumber: string;
   customerNotes: string;
-}) =>
-  apiFetch("/admin/bookings/create", {
+}) {
+  return apiFetch("/admin/bookings/create", {
     method: "POST",
     body: JSON.stringify(data),
   });
+}
 
-export async function deleteBooking(id: string) {
+/**
+ * Delete a booking.
+ */
+export function deleteBooking(id: string): Promise<void> {
   return apiFetch<void>(`/admin/bookings/${id}`, {
     method: "DELETE",
   });

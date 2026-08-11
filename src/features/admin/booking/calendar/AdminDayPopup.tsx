@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import type { AdminCalendarDay } from "../types/AdminCalendar";
-import type { Item } from "../../../sharedTypes/Item";
-import { createAdminBooking } from "../api/adminBookingApi";
+import type { AdminCalendarDay } from "../admin/booking/types/AdminCalendar";
+import type { Item } from "../sharedTypes/Item";
+import { createAdminBooking } from "../admin/booking/api/adminBookingApi";
 
 import "./adminDayPopup.css";
 

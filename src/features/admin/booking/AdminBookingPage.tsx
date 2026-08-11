@@ -292,7 +292,6 @@ export default function AdminBookingsPage() {
           month={month}
           setYear={setYear}
           setMonth={setMonth}
-          visibleItemIds={visibleItemIds}
           onBookingClick={setSelectedBooking}
           onDayClick={setSelectedDay}
         />

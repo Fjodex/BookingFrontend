@@ -9,8 +9,6 @@ import { getItem } from "../items/api/itemsApi";
 
 import { createBooking } from "./api/bookings";
 
-import type { CalendarDay } from "./api/calendar";
-
 import "./bookingPage.css";
 
 export default function BookingPage() {
@@ -28,12 +26,8 @@ export default function BookingPage() {
      CALENDAR
      ============================================================ */
 
-  const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([]);
-
   const [fromDate, setFromDate] = useState<string | null>(null);
-
   const [toDate, setToDate] = useState<string | null>(null);
-
   const [selectedRange, setSelectedRange] = useState<string[]>([]);
 
   /* ============================================================
@@ -41,11 +35,8 @@ export default function BookingPage() {
      ============================================================ */
 
   const [firstName, setFirstName] = useState("");
-
   const [lastName, setLastName] = useState("");
-
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [customerNotes, setCustomerNotes] = useState("");
 
   /* ============================================================
@@ -62,55 +53,6 @@ export default function BookingPage() {
   } | null>(null);
 
   /* ============================================================
-     BOOKING RULES
-     ============================================================ */
-
-  const BOOKING_CUTOFF_HOUR = 17;
-
-  /*
-   * local yyyy-mm-dd
-   */
-
-  const toLocalISODate = (date: Date) => {
-    const year = date.getFullYear();
-
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  };
-
-  /*
-   * cannot book in past
-   * or today after cutoff
-   */
-
-  const isPastBookingDate = (date: string) => {
-    const now = new Date();
-
-    const today = toLocalISODate(now);
-
-    /*
-     * before today
-     */
-
-    if (date < today) {
-      return true;
-    }
-
-    /*
-     * today after cutoff
-     */
-
-    if (date === today && now.getHours() >= BOOKING_CUTOFF_HOUR) {
-      return true;
-    }
-
-    return false;
-  };
-
-  /* ============================================================
      LOAD ITEM
      ============================================================ */
 
@@ -121,79 +63,19 @@ export default function BookingPage() {
   }, [itemId]);
 
   /* ============================================================
-     VALID RANGE BUILDER
-     ============================================================ */
-
-  const buildValidRange = (start: string, end: string) => {
-    const dates: string[] = [];
-
-    const current = new Date(start);
-
-    const last = new Date(end);
-
-    while (current <= last) {
-      const iso = toLocalISODate(current);
-
-      /*
-       * cannot book in past
-       */
-
-      if (isPastBookingDate(iso)) {
-        return null;
-      }
-
-      const day = calendarDays.find((d) => d.date === iso);
-
-      /*
-       * cannot pass through bookings
-       *
-       * CLOSED DAYS ARE ALLOWED
-       */
-
-      if (day?.isBooked) {
-        return null;
-      }
-
-      dates.push(iso);
-
-      current.setDate(current.getDate() + 1);
-    }
-
-    return dates;
-  };
-
-  /* ============================================================
      DATE SELECTION
      ============================================================ */
 
   const selectDate = (date: string) => {
     /*
-     * cannot select invalid start date
-     */
-
-    if (!fromDate && isPastBookingDate(date)) {
-      return;
-    }
-
-    /*
      * FIRST CLICK
+     *
+     * The Calendar component only allows selectable dates
+     * to trigger this callback.
      */
-
     if (!fromDate) {
-      const day = calendarDays.find((d) => d.date === date);
-
-      /*
-       * cannot start on booked date
-       */
-
-      if (day?.isBooked) {
-        return;
-      }
-
       setFromDate(date);
-
       setToDate(null);
-
       setSelectedRange([date]);
 
       return;
@@ -205,48 +87,45 @@ export default function BookingPage() {
 
     if (!toDate) {
       /*
-       * cannot select before start
+       * Cannot select a date before the pickup date.
        */
-
       if (new Date(date) < new Date(fromDate)) {
         return;
       }
 
-      const range = buildValidRange(fromDate, date);
-
       /*
-       * invalid range
+       * The calendar API determines which dates are selectable.
+       *
+       * At this point we simply create the selected range.
        */
+      const range: string[] = [];
 
-      if (!range) {
-        return;
+      const current = new Date(fromDate);
+      const last = new Date(date);
+
+      while (current <= last) {
+        const year = current.getFullYear();
+        const month = String(current.getMonth() + 1).padStart(2, "0");
+        const day = String(current.getDate()).padStart(2, "0");
+
+        range.push(`${year}-${month}-${day}`);
+
+        current.setDate(current.getDate() + 1);
       }
 
       setToDate(date);
-
       setSelectedRange(range);
 
       return;
     }
 
     /*
-     * THIRD CLICK RESETS
+     * THIRD CLICK
+     *
+     * Start a new booking period.
      */
-
-    if (isPastBookingDate(date)) {
-      return;
-    }
-
-    const day = calendarDays.find((d) => d.date === date);
-
-    if (day?.isBooked) {
-      return;
-    }
-
     setFromDate(date);
-
     setToDate(null);
-
     setSelectedRange([date]);
   };
 
@@ -280,7 +159,6 @@ export default function BookingPage() {
         firstName,
         lastName,
         phoneNumber,
-
         customerNotes,
       });
 
@@ -288,26 +166,20 @@ export default function BookingPage() {
 
       setReceipt({
         dates: [...selectedRange],
-
         total,
       });
 
       /*
-       * reset
+       * Reset
        */
 
       setFromDate(null);
-
       setToDate(null);
-
       setSelectedRange([]);
 
       setFirstName("");
-
       setLastName("");
-
       setPhoneNumber("");
-
       setCustomerNotes("");
 
       setShowConfirm(false);
@@ -388,10 +260,8 @@ export default function BookingPage() {
 
         <div className="calendar-wrapper">
           <CalendarContainer
-            itemId={item.id}
             selectedRange={selectedRange}
             onSelect={selectDate}
-            onDaysLoaded={setCalendarDays}
           />
         </div>
 
