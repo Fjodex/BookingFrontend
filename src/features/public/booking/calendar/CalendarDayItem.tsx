@@ -4,6 +4,7 @@ interface Props {
   day: CalendarDay;
 
   isSelected: boolean;
+
   isDisabled: boolean;
 
   onSelect: (date: string) => void;
@@ -17,7 +18,11 @@ export default function CalendarDayItem({
 }: Props) {
   const classNames = [
     "calendar-day",
+
+    day.selectable ? "selectable" : "not-selectable",
+
     isSelected ? "selected" : "",
+
     isDisabled ? "disabled" : "",
   ]
     .filter(Boolean)
