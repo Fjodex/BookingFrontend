@@ -8,22 +8,16 @@ export interface CalendarDay {
   closeTime: string | null;
 }
 
-export interface CalendarMonth {
-  year: number;
-  month: number;
-  days: CalendarDay[];
-}
-
 export function getCalendarMonth(
   year: number,
   month: number,
   selectedDate?: string,
-): Promise<CalendarMonth> {
+): Promise<CalendarDay[]> {
   let url = `/calendar/${year}/${month}`;
 
   if (selectedDate) {
     url += `?selectedDate=${encodeURIComponent(selectedDate)}`;
   }
 
-  return apiFetch<CalendarMonth>(url);
+  return apiFetch<CalendarDay[]>(url);
 }

@@ -61,12 +61,12 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
     let cancelled = false;
 
     getCalendarMonth(year, month, selectedDateForMonth)
-      .then((res) => {
+      .then((days) => {
         if (cancelled) {
           return;
         }
 
-        setDays(res.days);
+        setDays(days);
       })
       .catch((error) => {
         if (cancelled) {
