@@ -9,78 +9,96 @@
     0 6px 20px rgba(0, 0, 0, 0.05);
 
   padding: 24px;
+
   height: calc(100% - 44px);
+
   display: flex;
   flex-direction: column;
+
   min-height: 0;
 }
 
 /* ================= HEADER ================= */
 
-.calendar-header {
+.admin-calendar .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   margin-bottom: 18px;
 }
 
-.calendar-header button {
+.admin-calendar .calendar-header button {
   background: #f3f4f6;
-  border: 1px solid #e5e7eb; /* 🔥 border back */
+
+  border: 1px solid #e5e7eb;
+
   padding: 6px 12px;
+
   border-radius: 6px;
+
   cursor: pointer;
+
   font-weight: 500;
+
   transition: all 0.15s ease;
 }
 
-.calendar-header button:hover {
+.admin-calendar .calendar-header button:hover {
   background: #e5e7eb;
 }
 
 /* ================= WEEKDAYS ================= */
 
-.calendar-weekdays {
+.admin-calendar .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+
   margin-bottom: 8px;
 }
 
-.calendar-weekdays div {
+.admin-calendar .calendar-weekdays div {
   text-align: center;
+
   font-weight: 600;
   font-size: 14px;
+
   padding: 6px 0;
+
   color: #6b7280;
 }
 
 /* ================= GRID ================= */
 
-.calendar-grid {
+.admin-calendar .calendar-grid {
   flex: 1;
+
   display: grid;
 
-  /* 🔥 Force strict equal sizing */
   grid-template-columns: repeat(7, minmax(0, 1fr));
+
   grid-template-rows: repeat(6, minmax(0, 1fr));
 
   gap: 10px;
+
   min-height: 0;
+
   padding-bottom: 15px;
 }
 
 /* ================= DAY CELL ================= */
 
-.calendar-day {
+.admin-calendar .calendar-day {
   display: flex;
   flex-direction: column;
 
   border-radius: 10px;
-  padding: 8px;
-  min-width: 0; /* 🔥 important */
-  min-height: 0; /* 🔥 important */
 
-  /* 🔥 Border added back */
+  padding: 8px;
+
+  min-width: 0;
+  min-height: 0;
+
   border: 1px solid #e5e7eb;
 
   cursor: pointer;
@@ -92,8 +110,9 @@
     border 0.12s ease;
 }
 
-.calendar-day:hover {
+.admin-calendar .calendar-day:hover {
   transform: translateY(-2px);
+
   box-shadow:
     0 6px 16px rgba(0, 0, 0, 0.06),
     0 2px 6px rgba(0, 0, 0, 0.04);
@@ -101,128 +120,157 @@
 
 /* ================= DAY STATES ================= */
 
-.calendar-day.future {
+.admin-calendar .calendar-day.future {
   background: white;
 }
 
-.calendar-day.past {
+.admin-calendar .calendar-day.past {
   background: #f9fafb;
   color: #9ca3af;
 }
 
-.calendar-day.today {
-  border: 2px solid #2c7be5; /* 🔥 accent border */
+.admin-calendar .calendar-day.today {
+  border: 2px solid #2c7be5;
 }
 
-.calendar-day.blocked {
+.admin-calendar .calendar-day.blocked {
   background: #ffe6e6;
   border: 2px solid #cc0000;
 }
 
 /* ================= DAY NUMBER ================= */
 
-.day-number {
+.admin-calendar .day-number {
   font-size: 13px;
   font-weight: 600;
+
   margin-bottom: 6px;
 }
 
 /* ================= BOOKINGS ================= */
 
-.calendar-bookings {
+.admin-calendar .calendar-bookings {
   flex: 1;
+
   overflow-y: auto;
+
   min-height: 0;
 
-  /* 🔥 Prevent layout shift */
   scrollbar-gutter: stable;
 
   padding-right: 4px;
 }
 
-.calendar-bookings::-webkit-scrollbar {
+.admin-calendar .calendar-bookings::-webkit-scrollbar {
   width: 6px;
 }
 
-.calendar-bookings::-webkit-scrollbar-thumb {
+.admin-calendar .calendar-bookings::-webkit-scrollbar-thumb {
   background: #d1d5db;
   border-radius: 3px;
 }
 
-.calendar-booking {
+.admin-calendar .calendar-booking {
   margin-top: 4px;
+
   padding: 4px 6px;
+
   border-radius: 6px;
+
   font-size: 12px;
+
   color: white;
+
   cursor: pointer;
+
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.admin-calendar .booking-name {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  flex: 1;
 }
 
 /* ================= COUNTER ================= */
 
-.booking-counter {
+.admin-calendar .booking-counter {
   font-size: 12px;
+
   opacity: 0.6;
+
   margin-top: 4px;
 }
 
 /* ================= EMPTY CELLS ================= */
 
-.calendar-empty {
+.admin-calendar .calendar-empty {
   border-radius: 10px;
-  border: 1px solid transparent; /* keeps layout consistent */
+
+  border: 1px solid transparent;
+
   background: transparent;
 }
 
 /* ================= NOTE ICON ================= */
 
-.calendar-booking {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 6px;
-}
-
-.booking-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-}
-
-.note-icon {
+.admin-calendar .note-icon {
   font-size: 13px;
+
   cursor: pointer;
+
   opacity: 0.85;
+
   transition: transform 0.15s ease;
 }
 
-.note-icon:hover {
+.admin-calendar .note-icon:hover {
   transform: scale(1.2);
 }
 
 /* ================= NOTE POPUP ================= */
 
-.note-overlay {
+.admin-calendar .note-overlay {
   position: fixed;
+
   inset: 0;
+
   background: rgba(0, 0, 0, 0.35);
+
   backdrop-filter: blur(2px);
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   z-index: 10000;
 }
 
-.note-popup {
+.admin-calendar .note-popup {
   background: white;
+
   width: 380px;
   max-width: 90%;
+
   border-radius: 14px;
+
   padding: 24px;
+
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.15),
     0 6px 20px rgba(0, 0, 0, 0.08);
@@ -230,90 +278,100 @@
   animation: scaleIn 0.15s ease;
 }
 
-.note-header {
+.admin-calendar .note-header {
   font-weight: 600;
+
   margin-bottom: 16px;
+
   font-size: 16px;
 }
 
-.note-body {
+.admin-calendar .note-body {
   background: #f9fafb;
+
   border-radius: 10px;
+
   padding: 14px;
+
   font-size: 14px;
+
   line-height: 1.5;
+
   margin-bottom: 18px;
+
   white-space: pre-wrap;
 }
 
-.note-close {
+.admin-calendar .note-close {
   background: #2c7be5;
+
   color: white;
+
   border: none;
+
   padding: 8px 16px;
+
   border-radius: 8px;
+
   cursor: pointer;
 }
 
-.note-close:hover {
+.admin-calendar .note-close:hover {
   background: #1a68d1;
 }
+
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 900px) {
-  /* Remove outer padding */
   .admin-calendar {
     padding: 8px;
   }
 
-  /* Remove spacing between cells */
   .admin-calendar .calendar-grid {
-    gap: 0px;
+    gap: 0;
     padding-bottom: 0;
     flex: 1;
     min-height: 0;
   }
 
-  /* Tighten each cell */
-  .calendar-day {
+  .admin-calendar .calendar-day {
     padding: 4px;
     border-radius: 6px;
   }
 
-  /* Make weekdays more compact */
-  .calendar-weekdays {
+  .admin-calendar .calendar-weekdays {
     margin-bottom: 4px;
   }
 
-  .calendar-weekdays div {
+  .admin-calendar .calendar-weekdays div {
     padding: 4px 0;
     font-size: 12px;
   }
 
-  /* Reduce booking spacing */
-  .calendar-booking {
+  .admin-calendar .calendar-booking {
     margin-top: 2px;
     padding: 2px 4px;
     font-size: 11px;
   }
 
-  /* Reduce number spacing */
-  .day-number {
+  .admin-calendar .day-number {
     margin-bottom: 2px;
     font-size: 12px;
   }
 }
 
 @media (max-height: 800px) {
-  .calendar-bookings {
+  .admin-calendar .calendar-bookings {
     max-height: 42px;
   }
 
-  .calendar-booking {
+  .admin-calendar .calendar-booking {
     font-size: 10px;
     padding: 1px 4px;
     margin-top: 2px;
   }
 
-  .calendar-day {
+  .admin-calendar .calendar-day {
     padding: 4px;
   }
 
@@ -321,7 +379,7 @@
     gap: 2px;
   }
 
-  .day-number {
+  .admin-calendar .day-number {
     margin-bottom: 2px;
     font-size: 11px;
   }
