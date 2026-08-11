@@ -35,24 +35,53 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
 
   /*
    * The first date in selectedRange is the pickup date.
-   *
-   * When no date is selected:
-   *     selectedDate = undefined
-   *
-   * When a pickup date is selected:
-   *     selectedDate = pickup date
    */
+
   const selectedDate = selectedRange.length > 0 ? selectedRange[0] : undefined;
+
+  /*
+   * Only send selectedDate when it belongs
+   * to the month currently being displayed.
+   *
+   * Otherwise the backend returns the normal
+   * selectable dates for that month.
+   */
+
+  const selectedDateForMonth =
+    selectedDate &&
+    selectedDate.startsWith(`${year}-${String(month).padStart(2, "0")}-`)
+      ? selectedDate
+      : undefined;
 
   /* ============================================================
      LOAD CALENDAR
      ============================================================ */
 
   useEffect(() => {
-    getCalendarMonth(year, month, selectedDate).then((res) => {
-      setDays(res.days);
-    });
-  }, [year, month, selectedDate]);
+    let cancelled = false;
+
+    getCalendarMonth(year, month, selectedDateForMonth)
+      .then((res) => {
+        if (cancelled) {
+          return;
+        }
+
+        setDays(res.days);
+      })
+      .catch((error) => {
+        if (cancelled) {
+          return;
+        }
+
+        console.error("Failed to load calendar:", error);
+
+        setDays([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [year, month, selectedDateForMonth]);
 
   /* ============================================================
      NEXT MONTH
@@ -81,8 +110,10 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
     const currentMonth = current.getMonth() + 1;
 
     /*
-     * Prevent navigating before the current month.
+     * Prevent navigating before
+     * the current month.
      */
+
     if (year === currentYear && month <= currentMonth) {
       return;
     }
