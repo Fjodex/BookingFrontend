@@ -16,11 +16,9 @@ interface Props {
   month: number;
 
   setYear: React.Dispatch<React.SetStateAction<number>>;
-
   setMonth: React.Dispatch<React.SetStateAction<number>>;
 
   onBookingClick: (booking: AdminBooking) => void;
-
   onDayClick: (day: AdminCalendarDay) => void;
 }
 

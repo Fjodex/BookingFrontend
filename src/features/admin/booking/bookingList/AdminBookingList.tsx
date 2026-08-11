@@ -1,10 +1,13 @@
 import { useMemo, useState } from "react";
 import type { AdminBooking } from "../types/AdminBooking";
+
 import "./adminBookingList.css";
+
 import { Search } from "lucide-react";
 
 type Props = {
   bookings: AdminBooking[];
+
   onHandover: (b: AdminBooking) => void;
   onReturn: (b: AdminBooking) => void;
   onClear: (b: AdminBooking) => void;
@@ -18,24 +21,32 @@ export default function AdminBookingList({
   onDelete,
 }: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
+
   const [search, setSearch] = useState("");
 
   const today = new Date();
+
   today.setHours(0, 0, 0, 0);
 
   const twoWeeksAgo = new Date();
+
   twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
   twoWeeksAgo.setHours(0, 0, 0, 0);
 
   const filteredBookings = useMemo(() => {
     const visibleBookings = bookings.filter((b) => b.status !== "Completed");
 
-    if (!search.trim()) return visibleBookings;
+    if (!search.trim()) {
+      return visibleBookings;
+    }
 
     const q = search.toLowerCase();
 
     return visibleBookings.filter((b) =>
-      `${b.firstName ?? ""} ${b.lastName ?? ""} ${b.phoneNumber ?? ""} ${b.email ?? ""}`
+      `${b.firstName ?? ""} ${b.lastName ?? ""} ${b.phoneNumber ?? ""} ${
+        b.email ?? ""
+      }`
         .toLowerCase()
         .includes(q),
     );
@@ -71,16 +82,25 @@ export default function AdminBookingList({
         )}
 
         {filteredBookings.map((b) => {
-          const bookingDate = new Date(b.bookingDate);
+          /*
+           * fromDate is the pickup date.
+           *
+           * This replaces the old bookingDate property.
+           */
+
+          const bookingDate = new Date(b.fromDate);
+
           bookingDate.setHours(0, 0, 0, 0);
 
           const isOlderThanToday = bookingDate < today;
+
           const isOlderThanTwoWeeks = bookingDate < twoWeeksAgo;
 
           return (
             <div
               key={b.id}
-              className={`booking-card
+              className={`
+                booking-card
                 ${isOlderThanToday ? "booking-warning" : ""}
                 ${isOlderThanTwoWeeks ? "booking-danger" : ""}
               `}

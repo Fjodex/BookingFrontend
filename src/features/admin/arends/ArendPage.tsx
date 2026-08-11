@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { getBookingHistory } from "../booking/api/adminBookingApi";
 import type { AdminBooking } from "../booking/types/AdminBooking";
 
@@ -9,6 +10,7 @@ import "./arendPage.css";
 
 export default function ArendPage() {
   const [bookings, setBookings] = useState<AdminBooking[]>([]);
+
   const [selectedBooking, setSelectedBooking] = useState<AdminBooking | null>(
     null,
   );
@@ -23,8 +25,7 @@ export default function ArendPage() {
     const filtered = data
       .filter((b) => b.status === "InCustomerCare" || b.status === "Completed")
       .sort(
-        (a, b) =>
-          new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime(),
+        (a, b) => new Date(b.toDate).getTime() - new Date(a.toDate).getTime(),
       );
 
     setBookings(filtered);
@@ -38,6 +39,7 @@ export default function ArendPage() {
     <div className="arend-page">
       <div className="arend-layout">
         {/* BOOKINGS PANEL */}
+
         <div className="arend-bookings">
           <h2>Bokningar</h2>
 
@@ -58,7 +60,7 @@ export default function ArendPage() {
               <div className="booking-email">{booking.email}</div>
 
               <div className="booking-date">
-                {new Date(booking.bookingDate).toLocaleDateString("sv-SE")}
+                {new Date(booking.toDate).toLocaleDateString("sv-SE")}
               </div>
 
               <div className="booking-status">{booking.status}</div>
@@ -74,10 +76,12 @@ export default function ArendPage() {
         </div>
 
         {/* AREND BOARD */}
+
         <ArendBoard />
       </div>
 
       {/* CREATE AREND MODAL */}
+
       {selectedBooking && (
         <CreateArendModal
           booking={selectedBooking}

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import type { AdminCalendarDay } from "../admin/booking/types/AdminCalendar";
-import type { Item } from "../sharedTypes/Item";
-import { createAdminBooking } from "../admin/booking/api/adminBookingApi";
+import type { AdminCalendarDay } from "../types/AdminCalendar";
+import type { Item } from "../../../sharedTypes/Item";
+import { createAdminBooking } from "../api/adminBookingApi";
 
 import "./adminDayPopup.css";
 
@@ -27,8 +27,6 @@ export default function AdminDayPopup({
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [customerNotes, setCustomerNotes] = useState("");
-
-  const hasBookings = day.bookings.length > 0;
 
   const bookedItemIds = day.bookings.map((b) => b.itemId);
 

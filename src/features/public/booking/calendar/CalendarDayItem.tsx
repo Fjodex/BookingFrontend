@@ -4,7 +4,6 @@ interface Props {
   day: CalendarDay;
 
   isSelected: boolean;
-
   isDisabled: boolean;
 
   onSelect: (date: string) => void;
@@ -16,41 +15,15 @@ export default function CalendarDayItem({
   isDisabled,
   onSelect,
 }: Props) {
-  /* ============================================================
-     STATE
-     ============================================================ */
-
-  const isBooked = day.isBooked;
-
-  const isClosed = !day.canReturn;
-
-  /* ============================================================
-     CLASSNAMES
-     ============================================================ */
-
   const classNames = [
     "calendar-day",
-
     isSelected ? "selected" : "",
-
-    isBooked ? "booked" : "",
-
-    isClosed ? "closed" : "",
-
     isDisabled ? "disabled" : "",
   ]
     .filter(Boolean)
     .join(" ");
 
-  /* ============================================================
-     DAY NUMBER
-     ============================================================ */
-
   const dayNumber = new Date(day.date).getDate();
-
-  /* ============================================================
-     RENDER
-     ============================================================ */
 
   return (
     <button

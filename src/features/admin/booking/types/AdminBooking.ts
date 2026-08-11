@@ -3,8 +3,8 @@ import type { BookingStatus } from "./BookingStatus";
 export interface AdminBooking {
   id: string;
 
-  fromDate: string; // ISO string from API
-  toDate: string; // ISO string from API
+  fromDate: string;
+  toDate: string;
 
   itemId: string;
   itemName: string;

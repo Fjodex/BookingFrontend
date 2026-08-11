@@ -24,55 +24,6 @@ export default function Calendar({ days, selectedRange, onSelectDate }: Props) {
   }
 
   /* ============================================================
-     BOOKING RULES
-     ============================================================ */
-
-  const BOOKING_CUTOFF_HOUR = 17;
-
-  /*
-   * local yyyy-mm-dd
-   */
-
-  const toLocalISODate = (date: Date) => {
-    const year = date.getFullYear();
-
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  };
-
-  /*
-   * past date
-   * or today after cutoff
-   */
-
-  const isPastBookingDate = (date: string) => {
-    const now = new Date();
-
-    const today = toLocalISODate(now);
-
-    /*
-     * before today
-     */
-
-    if (date < today) {
-      return true;
-    }
-
-    /*
-     * today after cutoff
-     */
-
-    if (date === today && now.getHours() >= BOOKING_CUTOFF_HOUR) {
-      return true;
-    }
-
-    return false;
-  };
-
-  /* ============================================================
      FIRST DAY OFFSET
      ============================================================ */
 
@@ -80,7 +31,7 @@ export default function Calendar({ days, selectedRange, onSelectDate }: Props) {
 
   /*
    * Convert Sunday-first JS calendar
-   * to Monday-first
+   * to Monday-first.
    */
 
   const mondayIndex = (firstDate.getDay() + 6) % 7;
@@ -141,25 +92,33 @@ export default function Calendar({ days, selectedRange, onSelectDate }: Props) {
 
       <div className="calendar-grid">
         {filledDays.map((day, index) => {
-          /*
-           * empty placeholder
-           */
+          /* ==================================================
+             EMPTY PLACEHOLDER
+             ================================================== */
 
           if (!day) {
             return <div key={`empty-${index}`} className="calendar-empty" />;
           }
 
-          /*
-           * selected
-           */
+          /* ==================================================
+             SELECTED
+             ================================================== */
 
           const isSelected = selectedRange.includes(day.date);
 
+          /* ==================================================
+             DISABLED
+             ================================================== */
+
           /*
-           * disabled
+           * The backend now decides whether a date
+           * is selectable.
+           *
+           * We therefore don't check bookings or
+           * opening hours here.
            */
 
-          const isDisabled = isPastBookingDate(day.date) || day.isBooked;
+          const isDisabled = !day.selectable;
 
           return (
             <CalendarDayItem
