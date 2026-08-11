@@ -1,6 +1,6 @@
 /* =========================
    CALENDAR CONTENT
-========================= */
+   ========================= */
 
 .calendar-content {
   width: 100%;
@@ -8,9 +8,9 @@
 
 /* =========================
    WEEKDAYS
-========================= */
+   ========================= */
 
-.calendar-weekdays {
+.calendar-content .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: 16px;
@@ -22,19 +22,23 @@
 
 /* =========================
    GRID
-========================= */
+   ========================= */
 
-.calendar-grid {
+.calendar-content .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
 }
 
-.calendar-empty {
+.calendar-content .calendar-empty {
   height: 52px;
 }
 
-.calendar-day {
+/* =========================
+   DAY
+   ========================= */
+
+.calendar-content .calendar-day {
   width: 100%;
   aspect-ratio: 1;
   border: none;
@@ -52,53 +56,48 @@
     opacity 0.15s ease;
 }
 
-/* ============================================================
+/* =========================
    SELECTABLE
-   ============================================================ */
+   ========================= */
 
-.calendar-day.selectable {
+.calendar-content .calendar-day.selectable {
   background: white;
   color: #222;
   cursor: pointer;
 }
 
-.calendar-day.selectable:hover:not(:disabled) {
+.calendar-content .calendar-day.selectable:hover:not(:disabled) {
   background: #f0f0f0;
 }
 
-/* ============================================================
+/* =========================
    NOT SELECTABLE
-   ============================================================ */
+   ========================= */
 
-.calendar-day.not-selectable {
+.calendar-content .calendar-day.not-selectable {
   background: #eeeeee;
   color: #999;
 }
 
-/* ============================================================
+/* =========================
    SELECTED
-   ============================================================ */
+   ========================= */
 
-.calendar-day.selected {
+.calendar-content .calendar-day.selected {
   background: #2f6fed;
   color: white;
   font-weight: 600;
 }
 
-/* ============================================================
+/* =========================
    DISABLED
-   ============================================================ */
+   ========================= */
 
-.calendar-day:disabled {
+.calendar-content .calendar-day:disabled {
   cursor: default;
 }
 
-/*
- * Past dates should remain visually disabled,
- * even if the backend says they are selectable.
- */
-
-.calendar-day.disabled {
+.calendar-content .calendar-day.disabled {
   background: #eeeeee;
   color: #aaa;
 }
