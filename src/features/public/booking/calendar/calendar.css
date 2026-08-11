@@ -41,6 +41,7 @@
 .calendar-content .calendar-day {
   width: 100%;
   aspect-ratio: 1;
+
   border: none;
   border-radius: 8px;
 
