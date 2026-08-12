@@ -27,7 +27,7 @@ export default function BookingPage() {
      ============================================================ */
 
   const [fromDate, setFromDate] = useState<string | null>(null);
-  const [toDate, setToDate] = useState<string | null>(null);
+  const [, setToDate] = useState<string | null>(null);
   const [selectedRange, setSelectedRange] = useState<string[]>([]);
 
   /* ============================================================
@@ -68,10 +68,10 @@ export default function BookingPage() {
 
   const selectDate = (date: string) => {
     /*
-     * FIRST CLICK
+     * No pickup date yet.
      *
-     * The Calendar component only allows selectable dates
-     * to trigger this callback.
+     * This is the first selection and therefore
+     * triggers the calendar recalculation.
      */
     if (!fromDate) {
       setFromDate(date);
@@ -82,51 +82,31 @@ export default function BookingPage() {
     }
 
     /*
-     * SECOND CLICK
+     * Clicking the pickup date again clears
+     * the entire selection.
      */
-
-    if (!toDate) {
-      /*
-       * Cannot select a date before the pickup date.
-       */
-      if (new Date(date) < new Date(fromDate)) {
-        return;
-      }
-
-      /*
-       * The calendar API determines which dates are selectable.
-       *
-       * At this point we simply create the selected range.
-       */
-      const range: string[] = [];
-
-      const current = new Date(fromDate);
-      const last = new Date(date);
-
-      while (current <= last) {
-        const year = current.getFullYear();
-        const month = String(current.getMonth() + 1).padStart(2, "0");
-        const day = String(current.getDate()).padStart(2, "0");
-
-        range.push(`${year}-${month}-${day}`);
-
-        current.setDate(current.getDate() + 1);
-      }
-
-      setToDate(date);
-      setSelectedRange(range);
+    if (date === fromDate) {
+      setFromDate(null);
+      setToDate(null);
+      setSelectedRange([]);
 
       return;
     }
 
     /*
-     * THIRD CLICK
+     * Pickup date already exists.
      *
-     * Start a new booking period.
+     * Any other selectable date becomes/replaces
+     * the return date.
+     *
+     * Do NOT trigger a calendar recalculation.
      */
-    setFromDate(date);
-    setToDate(null);
-    setSelectedRange([date]);
+    if (date > fromDate) {
+      setToDate(date);
+      setSelectedRange([fromDate, date]);
+
+      return;
+    }
   };
 
   /* ============================================================
