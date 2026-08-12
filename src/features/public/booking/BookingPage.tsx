@@ -192,6 +192,7 @@ export default function BookingPage() {
      LOADING
      ============================================================ */
 
+  if (!itemId) return <div>Laddar...</div>;
   if (!item) return <div>Laddar...</div>;
 
   /* ============================================================
@@ -260,6 +261,7 @@ export default function BookingPage() {
 
         <div className="calendar-wrapper">
           <CalendarContainer
+            itemId={itemId}
             selectedRange={selectedRange}
             onSelect={selectDate}
           />

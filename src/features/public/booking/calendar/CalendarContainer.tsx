@@ -7,12 +7,16 @@ import { getCalendarMonth, type CalendarDay } from "../api/calendar";
 import "./calendarContainer.css";
 
 interface Props {
+  itemId: string;
   selectedRange: string[];
-
   onSelect: (date: string) => void;
 }
 
-export default function CalendarContainer({ selectedRange, onSelect }: Props) {
+export default function CalendarContainer({
+  itemId,
+  selectedRange,
+  onSelect,
+}: Props) {
   /* ============================================================
      INITIAL DATE
      ============================================================ */
@@ -36,7 +40,6 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
   /*
    * The first date in selectedRange is the pickup date.
    */
-
   const selectedDate = selectedRange.length > 0 ? selectedRange[0] : undefined;
 
   /*
@@ -44,9 +47,8 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
    * to the month currently being displayed.
    *
    * Otherwise the backend returns the normal
-   * selectable dates for that month.
+   * calendar for that month.
    */
-
   const selectedDateForMonth =
     selectedDate &&
     selectedDate.startsWith(`${year}-${String(month).padStart(2, "0")}-`)
@@ -60,7 +62,7 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
   useEffect(() => {
     let cancelled = false;
 
-    getCalendarMonth(year, month, selectedDateForMonth)
+    getCalendarMonth(itemId, year, month, selectedDateForMonth)
       .then((days) => {
         if (cancelled) {
           return;
@@ -81,7 +83,7 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [year, month, selectedDateForMonth]);
+  }, [itemId, year, month, selectedDateForMonth]);
 
   /* ============================================================
      NEXT MONTH
@@ -113,7 +115,6 @@ export default function CalendarContainer({ selectedRange, onSelect }: Props) {
      * Prevent navigating before
      * the current month.
      */
-
     if (year === currentYear && month <= currentMonth) {
       return;
     }

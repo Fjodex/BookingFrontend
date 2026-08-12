@@ -9,11 +9,12 @@ export interface CalendarDay {
 }
 
 export function getCalendarMonth(
+  itemId: string,
   year: number,
   month: number,
   selectedDate?: string,
 ): Promise<CalendarDay[]> {
-  let url = `/calendar/${year}/${month}`;
+  let url = `/calendar/${itemId}/${year}/${month}`;
 
   if (selectedDate) {
     url += `?selectedDate=${encodeURIComponent(selectedDate)}`;
