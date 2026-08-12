@@ -49,11 +49,7 @@ export default function CalendarContainer({
    * Otherwise the backend returns the normal
    * calendar for that month.
    */
-  const selectedDateForMonth =
-    selectedDate &&
-    selectedDate.startsWith(`${year}-${String(month).padStart(2, "0")}-`)
-      ? selectedDate
-      : undefined;
+  const selectedDateForMonth = selectedDate;
 
   /* ============================================================
      LOAD CALENDAR
