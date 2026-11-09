@@ -1,0 +1,267 @@
+/* ===== MODAL ===== */
+
+.admin-booking-edit {
+  width: 520px;
+  padding: 32px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER ===== */
+
+.admin-booking-edit .edit-booking-header {
+  margin-bottom: 24px;
+}
+
+.admin-booking-edit .edit-booking-header h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.admin-booking-edit .edit-booking-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* ===== SECTIONS ===== */
+
+.admin-booking-edit .edit-booking-section {
+  margin-top: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-booking-edit .edit-booking-section h4 {
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+
+/* ===== FORM ROW ===== */
+
+.admin-booking-edit .form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.admin-booking-edit .field-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-booking-edit .field-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.admin-booking-edit .form-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ===== INPUTS ===== */
+
+.admin-booking-edit .edit-booking-section input,
+.admin-booking-edit .edit-booking-section select,
+.admin-booking-edit .edit-booking-section textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition:
+    border 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.admin-booking-edit .edit-booking-section textarea {
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 0;
+}
+
+/* ===== FOCUS ===== */
+
+.admin-booking-edit .edit-booking-section input:focus,
+.admin-booking-edit .edit-booking-section select:focus,
+.admin-booking-edit .edit-booking-section textarea:focus {
+  outline: none;
+  border-color: #2c7be5;
+  box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.15);
+}
+
+/* ===== BOOKING PREVIEW ===== */
+
+.admin-booking-edit .booking-range-preview {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* ===== ACTIONS ===== */
+
+.admin-booking-edit .edit-booking-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.admin-booking-edit .edit-booking-actions button {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.admin-booking-edit .edit-booking-actions .btn-primary {
+  background: #2c7be5;
+  color: white;
+}
+
+.admin-booking-edit .edit-booking-actions .btn-primary:hover:not(:disabled) {
+  background: #1a68d1;
+}
+
+.admin-booking-edit .edit-booking-actions .secondary {
+  background: #f3f4f6;
+  color: #333;
+}
+
+.admin-booking-edit .edit-booking-actions .secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+/* ===== DELETE ===== */
+
+.admin-booking-edit .edit-booking-delete {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.admin-booking-edit .delete-button {
+  background: #c45757;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.admin-booking-edit .delete-button:hover:not(:disabled) {
+  background: #e60000;
+}
+
+/* ===== ERROR ===== */
+
+.admin-booking-edit .availability-error {
+  color: #c45757;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+/* ===== DISABLED ===== */
+
+.admin-booking-edit button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== BOOKING EDIT OVERLAY ===== */
+
+.admin-booking-edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ===== BOOKING EDIT MODAL ===== */
+
+.admin-booking-edit-overlay .admin-booking-edit {
+  position: relative;
+  background: white;
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  border-radius: 16px;
+  box-sizing: border-box;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.08);
+
+  animation: scaleIn 0.2s ease;
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===== MODAL FORM ELEMENTS ===== */
+
+.admin-booking-edit-overlay .admin-booking-edit label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 600px) {
+  .admin-booking-edit-overlay .admin-booking-edit {
+    padding: 24px;
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 600px) {
+  .admin-booking-edit {
+    width: calc(100vw - 32px);
+    padding: 24px;
+  }
+
+  .admin-booking-edit .edit-booking-section .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

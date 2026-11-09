@@ -149,16 +149,12 @@
 
 /* ================= BOOKINGS ================= */
 
-.admin-calendar .calendar-bookings {
-  flex: 1;
-
-  overflow-y: auto;
-
-  min-height: 0;
-
-  scrollbar-gutter: stable;
-
-  padding-right: 4px;
+.calendar-booking {
+  border: none;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
 }
 
 .admin-calendar .calendar-bookings::-webkit-scrollbar {

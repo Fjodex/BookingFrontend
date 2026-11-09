@@ -1,0 +1,264 @@
+/* ===== OVERLAY ===== */
+
+.admin-day-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 10000;
+  animation: adminDayFadeIn 0.2s ease;
+}
+
+/* ===== MODAL ===== */
+
+.admin-day-popup {
+  position: relative;
+  background: white;
+
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: 90vh;
+
+  padding: 32px;
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.08);
+
+  animation: adminDayScaleIn 0.2s ease;
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes adminDayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes adminDayScaleIn {
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===== TITLE ===== */
+
+.admin-day-popup .popup-title {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* ===== BLOCK SECTION ===== */
+
+.admin-day-popup .block-toggle-section {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-day-popup .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.admin-day-popup input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-left: 35px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.admin-day-popup .block-warning {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #c45757;
+}
+
+/* ===== EXISTING BOOKINGS ===== */
+
+.admin-day-popup .existing-bookings {
+  margin-bottom: 28px;
+}
+
+.admin-day-popup .existing-bookings h4 {
+  margin-bottom: 12px;
+}
+
+.admin-day-popup .booking-mini-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.admin-day-popup .mini-booking-item {
+  font-weight: 600;
+}
+
+.admin-day-popup .mini-booking-name {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.admin-day-popup .mini-booking-status {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* ===== CREATE BOOKING ===== */
+
+.admin-day-popup .create-booking-section {
+  margin-top: 20px;
+}
+
+.admin-day-popup .create-booking-section h4 {
+  margin-bottom: 18px;
+}
+
+/* ===== INPUTS ===== */
+
+.admin-day-popup .create-booking-section input[type="text"],
+.admin-day-popup .create-booking-section input[type="tel"],
+.admin-day-popup .create-booking-section input[type="email"],
+.admin-day-popup .create-booking-section input[type="date"],
+.admin-day-popup .create-booking-section select,
+.admin-day-popup .create-booking-section textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  font-size: 14px;
+  box-sizing: border-box;
+
+  transition:
+    border 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* ===== FORM ROW ===== */
+
+.admin-day-popup .form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.admin-day-popup .form-row input {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 14px;
+}
+
+.admin-day-popup .field-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-day-popup .field-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* ===== TEXTAREA ===== */
+
+.admin-day-popup .create-booking-section textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ===== FOCUS ===== */
+
+.admin-day-popup .create-booking-section input:focus,
+.admin-day-popup .create-booking-section select:focus,
+.admin-day-popup .create-booking-section textarea:focus {
+  outline: none;
+  border-color: #2c7be5;
+  box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.15);
+}
+
+/* ===== ERROR ===== */
+
+.admin-day-popup .availability-error {
+  color: #c45757;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+/* ===== BUTTONS ===== */
+
+.admin-day-popup .full-width {
+  width: 100%;
+}
+
+.admin-day-popup button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== MODAL ACTIONS ===== */
+
+.admin-day-popup .modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.admin-day-popup .modal-actions button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.admin-day-popup .modal-actions .secondary {
+  background: #f3f4f6;
+  color: #333;
+}
+
+.admin-day-popup .modal-actions .secondary:hover {
+  background: #e5e7eb;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 600px) {
+  .admin-day-popup {
+    width: calc(100vw - 32px);
+    padding: 24px;
+  }
+
+  .admin-day-popup .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

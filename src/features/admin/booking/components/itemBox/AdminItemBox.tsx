@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { Item } from "../../../sharedTypes/Item";
+import type { Item } from "../../../../sharedTypes/Item";
 import "./adminItemBox.css";
 
 export default function AdminItemsBox({
